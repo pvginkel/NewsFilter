@@ -1,3 +1,5 @@
+from .app import App
+
+
 def main():
-    print("Hi")
-    pass
+    App().run()
