@@ -1,0 +1,11 @@
+[project]
+name = "newsfilter"
+version = "0.1.0"
+description = "Filters news using ChatGPT."
+authors = [{ name = "Pieter van Ginkel", email = "pvginkel@gmail.com" }]
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://github.com/pvginkel/NewsFilter"

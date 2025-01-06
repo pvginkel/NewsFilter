@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "name": "Run NewsFilter",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "newsfilter",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    }
+  ]
+}
