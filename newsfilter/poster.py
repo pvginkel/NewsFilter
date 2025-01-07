@@ -37,7 +37,6 @@ class Poster:
         )
 
     def post(self, article: ScoredArticle):
-        return
         media_ids = None
 
         if False and article.article.image_url:

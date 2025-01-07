@@ -48,7 +48,6 @@ class App:
                 self.logger.info("Publishing as tweet")
 
                 poster.post(scored)
-                return
 
     def _save(self):
         os.makedirs(os.path.dirname(self.SETTINGS_PATH), exist_ok=True)
@@ -67,6 +66,6 @@ class App:
 
         if len(articles) > 0:
             self.config.last_processed = articles[0].published
-            # self._save()
+            self._save()
 
         return articles
