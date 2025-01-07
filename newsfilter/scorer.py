@@ -8,6 +8,7 @@ import json
 import re
 import hashlib
 from dataclasses_json import dataclass_json
+from .utils import html_to_text
 
 
 @dataclass_json
@@ -16,6 +17,7 @@ class ScoredArticle:
     article: NewsArticle
     summary: str
     score: int
+    reason: str
 
 
 class Scorer:
@@ -31,14 +33,12 @@ class Scorer:
         self.client = OpenAI()
 
         with open(os.path.join(self.DATA_PATH, "prompt.txt")) as f:
-            self.prompt = self._clean_prompt(f.read())
+            self.prompt = f.read()
 
     def score(self, article: NewsArticle) -> Optional[ScoredArticle]:
-        summary = (
-            article.summary[: (self.SUMMARY_LENGTH - 3)] + "..."
-            if len(article.summary) > self.SUMMARY_LENGTH
-            else article.summary
-        )
+        summary = html_to_text(article.summary)
+        if len(summary) > self.SUMMARY_LENGTH:
+            summary = summary[: (self.SUMMARY_LENGTH - 3)] + "..."
 
         if self.CACHE_PATH:
             cache_key = hashlib.sha1(f"{self.prompt}:::{article}".encode()).hexdigest()
@@ -80,6 +80,10 @@ class Scorer:
                                 "description": "Samenvatting van het nieuwsartikel van maximaal 250 karakters",
                                 "type": "string",
                             },
+                            "onderbouwing": {
+                                "description": "Onderbouwing van de gegeven score",
+                                "type": "string",
+                            },
                             "additionalProperties": False,
                         },
                     },
@@ -94,6 +98,7 @@ class Scorer:
                 article=article,
                 summary=obj["samenvatting"],
                 score=int(obj["nieuwswaardigheid"]),
+                reason=obj["onderbouwing"],
             )
         except:
             self.logger.exception("Failed to score article")
@@ -107,11 +112,3 @@ class Scorer:
                 f.write(scored.to_json())
 
         return scored
-
-    def _clean_prompt(self, prompt):
-        result = []
-
-        for line in re.split(r"\r?\n\r?\n", prompt):
-            result.append(re.sub(r"\s+", " ", line).strip())
-
-        return "\n\n".join(result)

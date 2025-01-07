@@ -42,7 +42,7 @@ class App:
 
             scored = scorer.score(article)
 
-            self.logger.info("Scored at %d", scored.score)
+            self.logger.info('Scored at %d because "%s"', scored.score, scored.reason)
 
             if scored and scored.score >= self.CUTOFF:
                 self.logger.info("Publishing as tweet")

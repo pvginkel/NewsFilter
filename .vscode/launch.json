@@ -7,10 +7,7 @@
       "module": "newsfilter",
       "console": "integratedTerminal",
       "env": {
-        "PYTHONPATH": "${workspaceFolder}",
-        "SETTINGS_PATH": "store/config.json",
-        "CACHE_PATH": "store/cache",
-        "DATA_PATH": "data"
+        "PYTHONPATH": "${workspaceFolder}"
       }
     }
   ]
