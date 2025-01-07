@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 from typing import Optional
 from openai import OpenAI
 import os
@@ -26,6 +27,7 @@ class Scorer:
     TEMPERATURE = 0.2
 
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self.client = OpenAI()
 
         with open(os.path.join(self.DATA_PATH, "prompt.txt")) as f:
@@ -94,6 +96,8 @@ class Scorer:
                 score=int(obj["nieuwswaardigheid"]),
             )
         except:
+            self.logger.exception("Failed to score article")
+
             scored = None
 
         if cache_file and scored:

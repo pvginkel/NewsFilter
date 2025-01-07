@@ -1,11 +1,13 @@
+import logging
 import os
 from typing import Optional
 from pprint import pprint
 from dataclasses import dataclass
 from datetime import datetime
 from dataclasses_json import dataclass_json
+from .poster import Poster
 from .scorer import Scorer
-from .loader import Loader
+from .loader import Loader, NewsArticle
 
 
 @dataclass_json
@@ -19,6 +21,8 @@ class App:
     CUTOFF = 7
 
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
+
         if os.path.exists(self.SETTINGS_PATH):
             with open(self.SETTINGS_PATH) as f:
                 self.config = Settings.from_json(f.read())
@@ -26,15 +30,25 @@ class App:
             self.config = Settings(last_processed=None)
 
     def run(self):
+        self.logger.info("Getting new news")
+
         new_news = self._get_new_news()
-        forward = []
 
         scorer = Scorer()
+        poster = Poster()
 
         for article in new_news:
+            self.logger.info("Scoring article %s", article.title)
+
             scored = scorer.score(article)
-            pprint(scored)
-            return
+
+            self.logger.info("Scored at %d", scored.score)
+
+            if scored and scored.score >= self.CUTOFF:
+                self.logger.info("Publishing as tweet")
+
+                poster.post(scored)
+                return
 
     def _save(self):
         os.makedirs(os.path.dirname(self.SETTINGS_PATH), exist_ok=True)
@@ -48,7 +62,7 @@ class App:
             os.rename(self.SETTINGS_PATH, self.SETTINGS_PATH + "-old")
         os.rename(self.SETTINGS_PATH + "-tmp", self.SETTINGS_PATH)
 
-    def _get_new_news(self):
+    def _get_new_news(self) -> list[NewsArticle]:
         articles = list(Loader().load(self.config.last_processed))
 
         if len(articles) > 0:
