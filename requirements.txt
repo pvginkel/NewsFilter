@@ -1,3 +1,4 @@
 openai
 feedparser
 dataclasses_json
+tweepy
