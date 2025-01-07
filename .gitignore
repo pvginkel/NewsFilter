@@ -1,3 +1,4 @@
 /store
+/tmp
 *.py[cod]
 __pycache__
