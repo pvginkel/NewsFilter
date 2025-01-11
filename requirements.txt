@@ -4,3 +4,4 @@ dataclasses_json
 tweepy
 standard-imghdr
 bs4
+PyYAML

@@ -1,10 +1,11 @@
 import logging
 import os
 from typing import Optional
-from pprint import pprint
 from dataclasses import dataclass
 from datetime import datetime
 from dataclasses_json import dataclass_json
+
+from .scorelogger import ScoreLogger
 from .poster import Poster
 from .scorer import Scorer
 from .loader import Loader, NewsArticle
@@ -36,6 +37,7 @@ class App:
 
         scorer = Scorer()
         poster = Poster()
+        score_logger = ScoreLogger()
 
         for article in new_news:
             self.logger.info("Scoring article %s", article.title)
@@ -43,6 +45,8 @@ class App:
             scored = scorer.score(article)
 
             self.logger.info('Scored at %d because "%s"', scored.score, scored.reason)
+
+            score_logger.log(scored)
 
             if scored and scored.score >= self.CUTOFF:
                 self.logger.info("Publishing as tweet")

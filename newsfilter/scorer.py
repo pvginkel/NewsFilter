@@ -32,7 +32,7 @@ class Scorer:
         self.logger = logging.getLogger(__name__)
         self.client = OpenAI()
 
-        with open(os.path.join(self.DATA_PATH, "prompt.txt")) as f:
+        with open(os.path.join(self.DATA_PATH, "prompt.txt"), encoding="utf-8") as f:
             self.prompt = f.read()
 
     def score(self, article: NewsArticle) -> Optional[ScoredArticle]:
@@ -44,7 +44,7 @@ class Scorer:
             cache_key = hashlib.sha1(f"{self.prompt}:::{article}".encode()).hexdigest()
             cache_file = os.path.join(self.CACHE_PATH, cache_key)
             if os.path.exists(cache_file):
-                with open(cache_file) as f:
+                with open(cache_file, encoding="utf-8") as f:
                     scored = ScoredArticle.from_json(f.read())
                     scored.article = article
 
@@ -108,7 +108,7 @@ class Scorer:
         if cache_file and scored:
             os.makedirs(os.path.dirname(cache_file), exist_ok=True)
 
-            with open(cache_file, "w") as f:
+            with open(cache_file, "w", encoding="utf-8") as f:
                 f.write(scored.to_json())
 
         return scored
