@@ -21,10 +21,10 @@ class ScoredArticle:
 
 
 class Scorer:
-    MODEL = "gpt-4o"
+    MODEL = "o4-mini"
     SUMMARY_LENGTH = 2000
     DATA_PATH = os.getenv("DATA_PATH")
-    CACHE_PATH = os.getenv("CACHE_PATH")
+    CACHE_PATH = os.path.join(os.getenv("STORE_PATH"), "cache", MODEL)
     # See https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683
     TEMPERATURE = 0.2
 
@@ -52,9 +52,11 @@ class Scorer:
         else:
             cache_file = None
 
+        temperature = 1 if self.MODEL.startswith("o") else self.TEMPERATURE
+
         response = self.client.chat.completions.create(
             model=self.MODEL,
-            temperature=self.TEMPERATURE,
+            temperature=temperature,
             messages=[
                 {
                     "role": "developer",

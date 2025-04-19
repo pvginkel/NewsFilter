@@ -18,7 +18,7 @@ class Settings:
 
 
 class App:
-    SETTINGS_PATH = os.getenv("SETTINGS_PATH")
+    SETTINGS_PATH = os.path.join(os.getenv("STORE_PATH"), "config.json")
     CUTOFF = 7
 
     def __init__(self):
