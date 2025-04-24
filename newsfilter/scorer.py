@@ -5,10 +5,10 @@ from openai import OpenAI
 import os
 from .loader import NewsArticle
 import json
-import re
 import hashlib
 from dataclasses_json import dataclass_json
 from .utils import html_to_text
+import datetime
 
 
 @dataclass_json
@@ -27,6 +27,20 @@ class Scorer:
     CACHE_PATH = os.path.join(os.getenv("STORE_PATH"), "cache", MODEL)
     # See https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683
     TEMPERATURE = 0.2
+    MONTHS = [
+        "januari",
+        "februari",
+        "maart",
+        "april",
+        "mei",
+        "juni",
+        "juli",
+        "augustus",
+        "september",
+        "oktober",
+        "november",
+        "december",
+    ]
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -60,7 +74,7 @@ class Scorer:
             messages=[
                 {
                     "role": "developer",
-                    "content": self.prompt,
+                    "content": self.prompt.replace("%DATE%", self.get_date()),
                 },
                 {
                     "role": "user",
@@ -114,3 +128,9 @@ class Scorer:
                 f.write(scored.to_json())
 
         return scored
+
+    def get_date(self):
+        date = datetime.date.today()
+        month = self.MONTHS[date.month - 1]
+
+        return f"{date.day} {month} {date.year}"
