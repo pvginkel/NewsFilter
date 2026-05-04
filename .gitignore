@@ -1,5 +1,5 @@
 /store
 /tmp
-/.venv
+.env
 *.py[cod]
 __pycache__
