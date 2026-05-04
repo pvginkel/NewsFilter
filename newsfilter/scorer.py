@@ -21,7 +21,7 @@ class ScoredArticle:
 
 
 class Scorer:
-    MODEL = "o4-mini"
+    MODEL = "gpt-5.4-mini"
     SUMMARY_LENGTH = 2000
     DATA_PATH = os.getenv("DATA_PATH")
     CACHE_PATH = os.path.join(os.getenv("STORE_PATH"), "cache", MODEL)
