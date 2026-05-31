@@ -1,0 +1,55 @@
+schemaVersion: "0.1"
+producer: newsfilter
+
+applicationComponents:
+  - id: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    label: NewsFilter
+    summary: >-
+      One-shot batch job that pulls the NOS Algemeen Nieuws RSS feed, scores
+      each new article 1-10 against the prompt criteria via OpenAI, and posts
+      qualifying articles to Twitter/X.
+    introduced: 2025-01-06
+    lifecycle: active
+    stereotype: SoftwareProduct
+    sourceRepository: git:pvginkel/NewsFilter
+    stats:
+      image: registry:5000/newsfilter
+
+applicationServices:
+  # OpenAI is a shared external service, declared once in the `architecture`
+  # base set (svc:openai-api,b4e2a983-…) and referenced by UUID below.
+  - id: svc:twitter-api,03d46e49-8971-47ba-aeab-9739f6cb561c
+    label: Twitter/X API
+    summary: >-
+      Twitter/X API (via tweepy) used to post a tweet for each qualifying
+      article.
+    introduced: 2025-01-06
+    lifecycle: active
+    stats:
+      homepage: https://developer.x.com/
+
+  - id: svc:nos-rss-feed,83b382b5-0fcc-4aa6-8dbd-3533c485f605
+    label: NOS Algemeen Nieuws RSS feed
+    summary: >-
+      Public NOS Algemeen Nieuws RSS feed, parsed each run as the source of
+      candidate articles.
+    introduced: 2025-01-06
+    lifecycle: active
+    stats:
+      homepage: https://nos.nl/
+
+relations:
+  - id: rel:newsfilter-consumes-openai
+    source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    target: svc:openai-api,b4e2a983-5c32-4ed1-94a1-6231a2112ccb
+    type: Association
+
+  - id: rel:newsfilter-consumes-twitter
+    source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    target: svc:twitter-api,03d46e49-8971-47ba-aeab-9739f6cb561c
+    type: Association
+
+  - id: rel:newsfilter-consumes-nos-rss
+    source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    target: svc:nos-rss-feed,83b382b5-0fcc-4aa6-8dbd-3533c485f605
+    type: Association
