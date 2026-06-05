@@ -1,50 +1,48 @@
 # NewsFilter
 
 Filters articles from the [NOS Algemeen Nieuws](https://feeds.nos.nl/nosnieuwsalgemeen)
-RSS feed using OpenAI and posts the ones that pass a relevance threshold to Twitter/X.
+RSS feed using OpenAI and posts the ones that pass a relevance threshold to Telegram.
 
 For each new article, the model is asked to rate how relevant the news is on a
 scale of 1-10 according to the criteria in [`data/prompt.txt`](data/prompt.txt).
-Articles scoring at or above the cutoff (currently `7`) are posted as a tweet
-with a short summary and a link to the original article. Every scored article
-is also written to a daily YAML log under `$STORE_PATH/scorelog/`.
+Articles scoring at or above the cutoff (currently `7`) are posted to one or more
+Telegram chats with a short summary and a link to the original article. When the
+NOS feed includes a hero image it is sent as a photo with the summary as the
+caption; otherwise a plain text message is sent. Every scored article is also
+written to a daily YAML log under `$STORE_PATH/scorelog/`.
 
 ## Requirements
 
 - Python 3.11+
 - [Poetry](https://python-poetry.org/) for dependency management
 - An OpenAI API key (the scorer uses the `o4-mini` model)
-- A Twitter/X developer app with OAuth 1.0a user-context credentials (only
-  required if you actually want to post tweets)
+- A Telegram bot token and one or more chat IDs to post to (only required if you
+  actually want to post messages)
 
 ## Configuration
 
 NewsFilter is configured entirely through environment variables.
 
-| Variable          | Required | Purpose                                                                      |
-|-------------------|----------|------------------------------------------------------------------------------|
-| `OPENAI_API_KEY`  | yes      | Used by the OpenAI client to score articles.                                 |
-| `TWITTER_API_KEY` | yes      | A JSON blob with the Twitter credentials (see below).                        |
-| `DATA_PATH`       | yes      | Directory containing `prompt.txt`. Use `data` when running from the repo.    |
-| `STORE_PATH`      | yes      | Writable directory for `config.json`, the score log, and the response cache. |
+| Variable             | Required | Purpose                                                                      |
+|----------------------|----------|------------------------------------------------------------------------------|
+| `OPENAI_API_KEY`     | yes      | Used by the OpenAI client to score articles.                                 |
+| `TELEGRAM_BOT_TOKEN` | yes      | The token of the Telegram bot used to post messages.                         |
+| `TELEGRAM_CHAT_IDS`  | yes      | Comma-separated list of chat IDs to post qualifying articles to.             |
+| `DATA_PATH`          | yes      | Directory containing `prompt.txt`. Use `data` when running from the repo.    |
+| `STORE_PATH`         | yes      | Writable directory for `config.json`, the score log, and the response cache. |
 
-`TWITTER_API_KEY` must be a JSON object with the following keys:
+`TELEGRAM_CHAT_IDS` is a comma-separated list, so a single value works too:
 
-```json
-{
-  "api_key": "...",
-  "api_key_secret": "...",
-  "access_token": "...",
-  "access_token_secret": "...",
-  "bearer_token": "..."
-}
+```sh
+export TELEGRAM_CHAT_IDS='123456789'
+export TELEGRAM_CHAT_IDS='123456789,-1009876543210'   # multiple chats
 ```
 
 On startup the app loads a `.env` file from the working directory via
 `python-dotenv`. The repo ships with one that sets `DATA_PATH=data` and
 `STORE_PATH=store`, so for local runs you only need to export
-`OPENAI_API_KEY` and `TWITTER_API_KEY` yourself. Real environment variables
-take precedence over `.env`.
+`OPENAI_API_KEY`, `TELEGRAM_BOT_TOKEN`, and `TELEGRAM_CHAT_IDS` yourself. Real
+environment variables take precedence over `.env`.
 
 ## Running locally
 
@@ -59,7 +57,8 @@ Export the required secrets and run the module:
 
 ```sh
 export OPENAI_API_KEY='sk-...'
-export TWITTER_API_KEY='{"api_key":"...","api_key_secret":"...","access_token":"...","access_token_secret":"...","bearer_token":"..."}'
+export TELEGRAM_BOT_TOKEN='123456:ABC-...'
+export TELEGRAM_CHAT_IDS='123456789,-1009876543210'
 
 poetry run python -m newsfilter
 ```
@@ -86,8 +85,8 @@ poetry run pytest
 ### Running with Docker
 
 The included scripts wrap `docker build` / `docker run` and mount `tmp/` as the
-store directory. Set `OPENAI_API_KEY` and `TWITTER_API_KEY` in your shell
-first, then:
+store directory. Set `OPENAI_API_KEY`, `TELEGRAM_BOT_TOKEN`, and
+`TELEGRAM_CHAT_IDS` in your shell first, then:
 
 ```sh
 ./scripts/run.sh    # build, run in the background, and tail the logs
@@ -103,7 +102,8 @@ newsfilter/        Application package (entry point: python -m newsfilter)
   loader.py        Reads the NOS RSS feed
   scorer.py        Calls OpenAI and parses the JSON response
   scorelogger.py   Appends every scored article to a daily YAML log
-  poster.py        Posts qualifying articles to Twitter/X
+  poster.py        Posts qualifying articles to Telegram
+  telegram.py      Thin Telegram Bot API client (sendMessage / sendPhoto)
 data/prompt.txt    System prompt used by the scorer
 pyproject.toml     Poetry project + dependency definitions
 scripts/           Docker helper scripts (build, run, stop, push)

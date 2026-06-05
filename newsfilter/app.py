@@ -49,7 +49,7 @@ class App:
             score_logger.log(scored)
 
             if scored and scored.score >= self.CUTOFF:
-                self.logger.info("Publishing as tweet")
+                self.logger.info("Publishing to Telegram")
 
                 poster.post(scored)
 
