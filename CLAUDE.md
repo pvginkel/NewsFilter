@@ -3,8 +3,8 @@
 ## What this project does
 
 NewsFilter pulls the NOS Algemeen Nieuws RSS feed, asks OpenAI to rate each new
-article 1-10 against the criteria in `data/prompt.txt`, and tweets the ones at
-or above the cutoff (currently `7`, set in `App.CUTOFF`).
+article 1-10 against the criteria in `data/prompt.txt`, and posts the ones at
+or above the cutoff (currently `7`, set in `App.CUTOFF`) to Telegram.
 
 A single run is one-shot — there is no scheduler in the code. In production it
 runs as a container that is launched periodically.
@@ -26,10 +26,13 @@ runs as a container that is launched periodically.
 3. `ScoreLogger.log(scored)` — appends every scored article (regardless of
    whether it gets posted) to `$STORE_PATH/scorelog/YYYY-MM-DD.txt` as a YAML
    document. Logs older than 10 days are deleted on each call.
-4. `Poster.post(scored)` — only invoked when `score >= CUTOFF`. Posts a tweet
-   of `summary + link`, truncated to fit 280 chars minus the t.co URL length.
-   The image upload branch is currently gated behind `if False and …` and is
-   effectively dead.
+4. `Poster.post(scored)` — only invoked when `score >= CUTOFF`. Sends
+   `summary + link` to every chat in `TELEGRAM_CHAT_IDS` via the thin
+   `Telegram` client in `newsfilter/telegram.py`. When the article has an
+   `image_url` (the NOS hero image, from the RSS `enclosure`) it is sent as a
+   `sendPhoto` with the text as the caption — Telegram fetches the URL itself,
+   so nothing is downloaded locally. Missing images and any `sendPhoto` failure
+   fall back to a plain `sendMessage`.
 
 ## Environment variables
 
@@ -40,8 +43,9 @@ mechanism) before `App` is imported, since paths are read at class-definition
 time:
 
 - `OPENAI_API_KEY` — used by the `OpenAI` client.
-- `TWITTER_API_KEY` — a JSON blob with `api_key`, `api_key_secret`,
-  `access_token`, `access_token_secret`, `bearer_token`.
+- `TELEGRAM_BOT_TOKEN` — token of the Telegram bot used to post messages.
+- `TELEGRAM_CHAT_IDS` — comma-separated list of chat IDs to post to (a single
+  value works too; whitespace around entries is trimmed).
 - `DATA_PATH` — directory containing `prompt.txt` (use `data` locally).
 - `STORE_PATH` — writable directory for `config.json`, `cache/`, and
   `scorelog/`.
@@ -58,12 +62,13 @@ the project root, because Poetry will silently adopt it instead of using the
 out-of-project default.
 
 - Local: `poetry run python -m newsfilter` after setting `OPENAI_API_KEY` /
-  `TWITTER_API_KEY` (`DATA_PATH` and `STORE_PATH` come from `.env`). Entry
-  point is `newsfilter/__main__.py`.
+  `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_IDS` (`DATA_PATH` and `STORE_PATH` come
+  from `.env`). Entry point is `newsfilter/__main__.py`.
 - Docker: `scripts/run.sh` builds the image and runs it with `tmp/` mounted as
   the store. The Dockerfile installs deps with Poetry into the system Python
   (`POETRY_VIRTUALENVS_CREATE=false`). The scripts read `OPENAI_API_KEY` /
-  `TWITTER_API_KEY` from the host shell (see `scripts/args.sh`).
+  `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_IDS` from the host shell (see
+  `scripts/args.sh`).
 - Tests: `poetry run pytest`. The suite in `tests/test_score.py` calls the
   real OpenAI API and asserts that low-relevance articles score at or below
   `6`. The scorer's on-disk cache makes re-runs fast and cheap.
@@ -76,6 +81,15 @@ out-of-project default.
   to `1`; otherwise `Scorer.TEMPERATURE` (`0.2`) is used.
 - Cache invalidation is implicit: changing the prompt or switching models
   changes the cache key / directory, so old entries are simply ignored.
+
+## Git workflow
+
+This is a one-man shop, so keep it simple:
+
+- Commit as you go — make small, self-contained commits as work progresses
+  rather than batching everything into one big commit at the end.
+- Work directly on `main`. No topic branches and no pull requests; just commit
+  and push.
 
 ## Federated architecture model
 
