@@ -30,17 +30,17 @@ applicationServices:
       homepage: https://nos.nl/
 
 relations:
-  - id: rel:newsfilter-consumes-openai
-    source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
-    target: svc:openai-api,b4e2a983-5c32-4ed1-94a1-6231a2112ccb
-    type: Association
+  - id: rel:openai-serves-newsfilter
+    source: svc:openai-api,b4e2a983-5c32-4ed1-94a1-6231a2112ccb
+    target: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    type: Serving
 
-  - id: rel:newsfilter-consumes-telegram
-    source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
-    target: svc:telegram-bot-api,6708ef33-aaf7-4acd-a10d-560d7a7e1d48
-    type: Association
+  - id: rel:telegram-serves-newsfilter
+    source: svc:telegram-bot-api,6708ef33-aaf7-4acd-a10d-560d7a7e1d48
+    target: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    type: Serving
 
-  - id: rel:newsfilter-consumes-nos-rss
-    source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
-    target: svc:nos-rss-feed,83b382b5-0fcc-4aa6-8dbd-3533c485f605
-    type: Association
+  - id: rel:nos-rss-serves-newsfilter
+    source: svc:nos-rss-feed,83b382b5-0fcc-4aa6-8dbd-3533c485f605
+    target: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
+    type: Serving
