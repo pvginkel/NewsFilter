@@ -7,7 +7,7 @@ applicationComponents:
     summary: >-
       One-shot batch job that pulls the NOS Algemeen Nieuws RSS feed, scores
       each new article 1-10 against the prompt criteria via OpenAI, and posts
-      qualifying articles to Twitter/X.
+      qualifying articles to Telegram.
     introduced: 2025-01-06
     lifecycle: active
     stereotype: SoftwareProduct
@@ -16,18 +16,9 @@ applicationComponents:
       image: registry:5000/newsfilter
 
 applicationServices:
-  # OpenAI is a shared external service, declared once in the `architecture`
-  # base set (svc:openai-api,b4e2a983-…) and referenced by UUID below.
-  - id: svc:twitter-api,03d46e49-8971-47ba-aeab-9739f6cb561c
-    label: Twitter/X API
-    summary: >-
-      Twitter/X API (via tweepy) used to post a tweet for each qualifying
-      article.
-    introduced: 2025-01-06
-    lifecycle: active
-    stats:
-      homepage: https://developer.x.com/
-
+  # OpenAI and Telegram are shared external services, declared once in the
+  # `architecture` base set (svc:openai-api,b4e2a983-…; svc:telegram-bot-api,
+  # 6708ef33-…) and referenced by UUID in the relations below.
   - id: svc:nos-rss-feed,83b382b5-0fcc-4aa6-8dbd-3533c485f605
     label: NOS Algemeen Nieuws RSS feed
     summary: >-
@@ -44,9 +35,9 @@ relations:
     target: svc:openai-api,b4e2a983-5c32-4ed1-94a1-6231a2112ccb
     type: Association
 
-  - id: rel:newsfilter-consumes-twitter
+  - id: rel:newsfilter-consumes-telegram
     source: app:newsfilter,22a90359-073c-4b89-a80f-87b4f1adb4b5
-    target: svc:twitter-api,03d46e49-8971-47ba-aeab-9739f6cb561c
+    target: svc:telegram-bot-api,6708ef33-aaf7-4acd-a10d-560d7a7e1d48
     type: Association
 
   - id: rel:newsfilter-consumes-nos-rss
