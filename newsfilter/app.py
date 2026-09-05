@@ -6,6 +6,7 @@ from datetime import datetime
 from dataclasses_json import dataclass_json
 
 from .config import STORE_PATH
+from .dedupe import Deduper
 from .loader import Loader, NewsArticle
 from .poster import Poster
 from .scorelogger import ScoreLogger
@@ -39,20 +40,28 @@ class App:
         scorer = Scorer()
         poster = Poster()
         score_logger = ScoreLogger()
+        deduper = Deduper()
 
         for article in new_news:
             self.logger.info("Scoring article %s", article.title)
 
             scored = scorer.score(article)
 
+            # `Scorer.score` returns None when the model's response does not
+            # parse. Everything below reads `scored`, so there is nothing left
+            # to do with this article.
+            if not scored:
+                continue
+
             self.logger.info('Scored at %d because "%s"', scored.score, scored.reason)
 
             score_logger.log(scored)
 
-            if scored and scored.score >= self.CUTOFF:
+            if scored.score >= self.CUTOFF and not deduper.duplicate_of(scored):
                 self.logger.info("Publishing to Telegram")
 
                 poster.post(scored)
+                deduper.remember(scored)
 
     def _save(self):
         os.makedirs(os.path.dirname(self.SETTINGS_PATH), exist_ok=True)

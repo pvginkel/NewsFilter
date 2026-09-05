@@ -2,10 +2,11 @@
 
 ## What this project does
 
-NewsFilter pulls four NOS RSS feeds (Algemeen Nieuws, Binnenland, Politiek and
-Economie), asks OpenAI to rate each new article 1-10 against the criteria in
-`data/prompt.txt`, and posts the ones at or above the cutoff (currently `7`,
-set in `App.CUTOFF`) to Telegram.
+NewsFilter pulls six NOS RSS feeds (Algemeen Nieuws, Binnenland, Politiek,
+Economie, Buitenland and Tech), asks OpenAI to rate each new article 1-10
+against the criteria in `data/prompt.txt`, and posts the ones at or above the
+cutoff (currently `7`, set in `App.CUTOFF`) to Telegram, suppressing
+duplicates of a story that already went out.
 
 A single run is one-shot — there is no scheduler in the code. In production it
 runs as a container that is launched periodically.
@@ -14,7 +15,7 @@ runs as a container that is launched periodically.
 
 `App.run()` in `newsfilter/app.py` is the orchestrator:
 
-1. `Loader.load(since)` — parses the four NOS RSS feeds, merges them (keeping
+1. `Loader.load(since)` — parses the six NOS RSS feeds, merges them (keeping
    the first occurrence of each article `link`, so a story carried by more
    than one feed is scored once), and yields `NewsArticle`s newer than
    `since`, sorted newest-first across all feeds. The cursor
@@ -29,13 +30,20 @@ runs as a container that is launched periodically.
 3. `ScoreLogger.log(scored)` — appends every scored article (regardless of
    whether it gets posted) to `$STORE_PATH/scorelog/YYYY-MM-DD.txt` as a YAML
    document. Logs older than 10 days are deleted on each call.
-4. `Poster.post(scored)` — only invoked when `score >= CUTOFF`. Sends
-   `summary + link` to every chat in `TELEGRAM_CHAT_IDS` via the thin
-   `Telegram` client in `newsfilter/telegram.py`. When the article has an
-   `image_url` (the NOS hero image, from the RSS `enclosure`) it is sent as a
-   `sendPhoto` with the text as the caption — Telegram fetches the URL itself,
-   so nothing is downloaded locally. Missing images and any `sendPhoto` failure
-   fall back to a plain `sendMessage`.
+4. `Deduper.duplicate_of(scored)` — for any article at or above `CUTOFF`,
+   checks whether it is the same story as one already posted in the last 48
+   hours, by embedding title + summary and comparing cosine similarity
+   against everything `Deduper.remember(scored)` has recorded in that window.
+   Only when it returns nothing does `App.run()` go on to post.
+5. `Poster.post(scored)` — only invoked when `score >= CUTOFF` and
+   `duplicate_of` found no match. Sends `summary + link` to every chat in
+   `TELEGRAM_CHAT_IDS` via the thin `Telegram` client in
+   `newsfilter/telegram.py`. When the article has an `image_url` (the NOS
+   hero image, from the RSS `enclosure`) it is sent as a `sendPhoto` with the
+   text as the caption — Telegram fetches the URL itself, so nothing is
+   downloaded locally. Missing images and any `sendPhoto` failure fall back
+   to a plain `sendMessage`. After a successful post, `deduper.remember(scored)`
+   records the story so later duplicates can be caught.
 
 ## Environment variables
 
@@ -51,8 +59,8 @@ optional and fall back to defaults:
 - `TELEGRAM_CHAT_IDS` — comma-separated list of chat IDs to post to (a single
   value works too; whitespace around entries is trimmed).
 - `DATA_PATH` — directory containing `prompt.txt`. Defaults to `data`.
-- `STORE_PATH` — writable directory for `config.json`, `cache/`, and
-  `scorelog/`. Defaults to `store`.
+- `STORE_PATH` — writable directory for `config.json`, `cache/`,
+  `scorelog/`, and `posted.json`. Defaults to `store`.
 
 The defaults live in `newsfilter/config.py`. They are still read at
 class-definition time, so changing `DATA_PATH` or `STORE_PATH` at runtime
@@ -86,9 +94,12 @@ unprefixed forms below are what a checkout outside the environment uses.
   high-side cases must reach `7`, so a model or prompt change that quietly
   drops everything under `CUTOFF` fails the build instead of going unnoticed.
   Every case builds its article with `published=now`, so the on-disk cache
-  never hides a regression. `tests/test_loader.py` covers merging the four
+  never hides a regression. `tests/test_loader.py` covers merging the six
   feeds — deduplication, newest-first ordering, and cursor filtering — by
   monkeypatching `feedparser.parse`, so it makes no network calls.
+  `tests/test_dedupe.py` covers suppression, the 48-hour window, persistence
+  across runs, pruning, the fail-open path, and a damaged state file, by
+  faking the OpenAI client, so it too makes no network calls.
 - Lint: `kc project lint` → `cexec python ruff check .` and
   `./scripts/arch-validate.py docs/architecture/*.yaml`.
 

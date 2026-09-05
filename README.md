@@ -1,17 +1,20 @@
 # NewsFilter
 
-Filters articles from four NOS RSS feeds ([Algemeen Nieuws](https://feeds.nos.nl/nosnieuwsalgemeen),
-[Binnenland](https://feeds.nos.nl/nosnieuwsbinnenland), [Politiek](https://feeds.nos.nl/nosnieuwspolitiek)
-and [Economie](https://feeds.nos.nl/nosnieuwseconomie)) using OpenAI and posts the ones that pass
-a relevance threshold to Telegram.
+Filters articles from six NOS RSS feeds ([Algemeen Nieuws](https://feeds.nos.nl/nosnieuwsalgemeen),
+[Binnenland](https://feeds.nos.nl/nosnieuwsbinnenland), [Politiek](https://feeds.nos.nl/nosnieuwspolitiek),
+[Economie](https://feeds.nos.nl/nosnieuwseconomie), [Buitenland](https://feeds.nos.nl/nosnieuwsbuitenland)
+and [Tech](https://feeds.nos.nl/nosnieuwstech)) using OpenAI and posts the ones that pass a relevance
+threshold to Telegram.
 
 For each new article, the model is asked to rate how relevant the news is on a
 scale of 1-10 according to the criteria in [`data/prompt.txt`](data/prompt.txt).
-Articles scoring at or above the cutoff (currently `7`) are posted to one or more
-Telegram chats with a short summary and a link to the original article. When the
-article includes a hero image it is sent as a photo with the summary as the
-caption; otherwise a plain text message is sent. Every scored article is also
-written to a daily YAML log under `$STORE_PATH/scorelog/`.
+Articles scoring at or above the cutoff (currently `7`) are checked against
+stories already posted in the last 48 hours, so the same development covered
+by more than one feed is not sent twice, and then posted to one or more
+Telegram chats with a short summary and a link to the original article. When
+the article includes a hero image it is sent as a photo with the summary as
+the caption; otherwise a plain text message is sent. Every scored article is
+also written to a daily YAML log under `$STORE_PATH/scorelog/`.
 
 ## Requirements
 
@@ -31,7 +34,7 @@ NewsFilter is configured entirely through environment variables.
 | `TELEGRAM_BOT_TOKEN` | only to post | The token of the Telegram bot used to post messages.                                                                                |
 | `TELEGRAM_CHAT_IDS`  | only to post | Comma-separated list of chat IDs to post qualifying articles to. With none set, the app scores and logs articles but posts nothing. |
 | `DATA_PATH`          | no           | Directory containing `prompt.txt`. Defaults to `data`.                                                                              |
-| `STORE_PATH`         | no           | Writable directory for `config.json`, the score log, and the response cache. Defaults to `store`.                                   |
+| `STORE_PATH`         | no           | Writable directory for `config.json`, the score log, the response cache, and the posted-story record. Defaults to `store`.          |
 
 `TELEGRAM_CHAT_IDS` is a comma-separated list, so a single value works too:
 
@@ -129,10 +132,11 @@ against the architecture validation service — the same check the
 
 ```
 newsfilter/        Application package (entry point: python -m newsfilter)
-  app.py           Orchestrates the run: load → score → log → post
-  loader.py        Reads and merges the four NOS RSS feeds
+  app.py           Orchestrates the run: load → score → log → dedupe → post
+  loader.py        Reads and merges the six NOS RSS feeds
   scorer.py        Calls OpenAI and parses the JSON response
   scorelogger.py   Appends every scored article to a daily YAML log
+  dedupe.py        Suppresses re-posting a story already sent in 48 hours
   poster.py        Posts qualifying articles to Telegram
   telegram.py      Thin Telegram Bot API client (sendMessage / sendPhoto)
   config.py        DATA_PATH / STORE_PATH defaults
