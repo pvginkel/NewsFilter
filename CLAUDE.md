@@ -88,8 +88,10 @@ unprefixed forms below are what a checkout outside the environment uses.
 
 - Scoring criteria live in `data/prompt.txt`. The placeholder `%DATE%` is
   replaced at request time with today's date in Dutch (`Scorer.get_date()`).
-- The model is set in `Scorer.MODEL`. For `o*` models, temperature is forced
-  to `1`; otherwise `Scorer.TEMPERATURE` (`0.2`) is used.
+- The model is set in `Scorer.MODEL` (currently `gpt-5.6-sol`). Reasoning
+  models — the prefixes in `Scorer.REASONING_PREFIXES`, i.e. `o*` and
+  `gpt-5.5` and up — reject any temperature but the default, so those get `1`;
+  the older chat models get `Scorer.TEMPERATURE` (`0.2`).
 - Cache invalidation is implicit: changing the prompt or switching models
   changes the cache key / directory, so old entries are simply ignored.
 

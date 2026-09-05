@@ -24,11 +24,14 @@ class ScoredArticle:
 
 
 class Scorer:
-    MODEL = "gpt-5.4-mini"
+    MODEL = "gpt-5.6-sol"
     SUMMARY_LENGTH = 2000
     CACHE_PATH = os.path.join(STORE_PATH, "cache", MODEL)
     # See https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683
     TEMPERATURE = 0.2
+    # Reasoning models reject every temperature but the default of 1; only the
+    # older chat models take TEMPERATURE.
+    REASONING_PREFIXES: ClassVar[tuple[str, ...]] = ("o", "gpt-5.5", "gpt-5.6", "gpt-6")
     MONTHS: ClassVar[list[str]] = [
         "januari",
         "februari",
@@ -68,7 +71,7 @@ class Scorer:
         else:
             cache_file = None
 
-        temperature = 1 if self.MODEL.startswith("o") else self.TEMPERATURE
+        temperature = 1 if self.MODEL.startswith(self.REASONING_PREFIXES) else self.TEMPERATURE
 
         response = self.client.chat.completions.create(
             model=self.MODEL,
