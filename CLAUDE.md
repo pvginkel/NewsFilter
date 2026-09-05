@@ -2,11 +2,10 @@
 
 ## What this project does
 
-NewsFilter pulls six NOS RSS feeds (Algemeen Nieuws, Binnenland, Politiek,
-Economie, Buitenland and Tech), asks OpenAI to rate each new article 1-10
-against the criteria in `data/prompt.txt`, and posts the ones at or above the
-cutoff (currently `7`, set in `App.CUTOFF`) to Telegram, suppressing
-duplicates of a story that already went out.
+NewsFilter pulls the NOS Algemeen Nieuws RSS feed, asks OpenAI to rate each
+new article 1-10 against the criteria in `data/prompt.txt`, and posts the
+ones at or above the cutoff (currently `7`, set in `App.CUTOFF`) to Telegram,
+suppressing duplicates of a story that already went out.
 
 A single run is one-shot — there is no scheduler in the code. In production it
 runs as a container that is launched periodically.
@@ -15,10 +14,11 @@ runs as a container that is launched periodically.
 
 `App.run()` in `newsfilter/app.py` is the orchestrator:
 
-1. `Loader.load(since)` — parses the six NOS RSS feeds, merges them (keeping
-   the first occurrence of each article `link`, so a story carried by more
-   than one feed is scored once), and yields `NewsArticle`s newer than
-   `since`, sorted newest-first across all feeds. The cursor
+1. `Loader.load(since)` — parses the feeds in `Loader.RSS_FEEDS`, which is
+   just NOS Algemeen Nieuws, and yields `NewsArticle`s newer than `since`,
+   newest first. More than one feed can be listed: they are merged on the
+   article `link`, keeping the first occurrence, so a story two feeds both
+   carry is still scored once. The cursor
    (`last_processed`) is persisted to `$STORE_PATH/config.json` via the
    atomic `App._save()` (writes `-tmp`, rotates `-old`, then renames).
 2. `Scorer.score(article)` — calls OpenAI with the prompt from `DATA_PATH/prompt.txt`
@@ -94,9 +94,10 @@ unprefixed forms below are what a checkout outside the environment uses.
   high-side cases must reach `7`, so a model or prompt change that quietly
   drops everything under `CUTOFF` fails the build instead of going unnoticed.
   Every case builds its article with `published=now`, so the on-disk cache
-  never hides a regression. `tests/test_loader.py` covers merging the six
-  feeds — deduplication, newest-first ordering, and cursor filtering — by
-  monkeypatching `feedparser.parse`, so it makes no network calls.
+  never hides a regression. `tests/test_loader.py` covers feed merging,
+  deduplication, newest-first ordering, and cursor filtering — by
+  monkeypatching `feedparser.parse` and `RSS_FEEDS`, so it makes no network
+  calls.
   `tests/test_dedupe.py` covers suppression, the 48-hour window, persistence
   across runs, pruning, the fail-open path, and a damaged state file, by
   faking the OpenAI client, so it too makes no network calls.

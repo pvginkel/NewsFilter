@@ -17,25 +17,20 @@ class NewsArticle:
 
 
 class Loader:
-    # "Algemeen" is not all of NOS: it is a general-mix feed, and on an average
-    # day it carries incidents, foreign news and human interest without a single
-    # Dutch policy or price item. The news worth scoring a 7 -- begrotingen,
-    # belastingen, huren, de energierekening -- only appears in `politiek` and
-    # `economie`, so those are read too. Feeds overlap; `load` dedupes on link.
+    # Just the general feed. Any single fetch of it can look narrow -- all
+    # incidents and foreign news, not a Dutch policy or price story in sight --
+    # but a feed only holds ~20 items while the job runs hourly, so what counts
+    # is the ~40 articles a day passing through it. Eleven days of production
+    # scorelog show every policy and price story in there: box 3, de gasprijs,
+    # de huren, de benzineprijs, het begrotingsakkoord, Prinsjesdag. Reading
+    # binnenland, politiek and economie alongside it re-reads those same stories
+    # under different headlines at three times the scoring calls.
     #
-    # A wider net costs API calls, not messages: the scorer is the gate, and
-    # over a measured day `buitenland` and `tech` added no article above the
-    # cutoff at all. They are here for what they carry when it matters -- a
-    # nationwide outage or a large data breach surfaces in `tech` first.
-    # `cultuurenmedia` and `opmerkelijk` are left out: they carry no policy, no
-    # prices and no turning points, so they can only ever spend tokens.
+    # Do not re-decide this from one fetch of the feed -- that snapshot is what
+    # made the case for six feeds look obvious, and it was wrong. `load` still
+    # merges and dedupes on link, so adding one back is a one-line change.
     RSS_FEEDS: ClassVar[list[str]] = [
         "https://feeds.nos.nl/nosnieuwsalgemeen",
-        "https://feeds.nos.nl/nosnieuwsbinnenland",
-        "https://feeds.nos.nl/nosnieuwspolitiek",
-        "https://feeds.nos.nl/nosnieuwseconomie",
-        "https://feeds.nos.nl/nosnieuwsbuitenland",
-        "https://feeds.nos.nl/nosnieuwstech",
     ]
 
     def load(self, since: datetime | None) -> Iterator[NewsArticle]:
