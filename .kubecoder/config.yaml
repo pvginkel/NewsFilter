@@ -1,0 +1,42 @@
+# The environment for NewsFilter. The app is a one-shot batch job: it reads an
+# RSS feed, calls two HTTP APIs and writes to a local store. It has no
+# database, no queue and no inbound API — hence no `services:` and no `ports:`.
+
+capabilities:
+  github: rw
+
+tools:
+  - use: python
+
+# `scripts/build.sh` used to run `docker build`; there is no Docker daemon in
+# the pod, so the Dockerfile is built with the `kaniko` client instead.
+imageBuilder: true
+
+# The only credential the environment needs. DATA_PATH and STORE_PATH are not
+# set here: `newsfilter/config.py` defaults them to `data` and `store`, which
+# is what a checkout looks like, so the verbs need no configuration at all.
+#
+# TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_IDS are deliberately NOT projected, and
+# the deployment's secret catalog holds neither. With no chat IDs configured
+# `Poster.post()` iterates an empty list, so a run here exercises the whole
+# load -> score -> log path without posting to the live chats.
+secrets:
+  OPENAI_API_KEY: openai-api-key
+
+setup:
+  - kc project setup
+
+preamble:
+  instructions: |
+    NewsFilter is a one-shot batch job — `poetry run python -m newsfilter`
+    processes the articles published since the last run and exits. There is no
+    server to start and nothing listens on a port.
+
+    Telegram is not wired up in this environment on purpose: OPENAI_API_KEY is
+    projected but TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_IDS are not, so the app
+    scores and logs articles here but posts nothing. Do not add them to make a
+    run "work" — posting from a dev environment reaches the real chats.
+
+    The test suite calls the live OpenAI API. The scorer's on-disk cache under
+    $STORE_PATH/cache makes re-runs free, so re-running it is cheap but the
+    first run after a prompt or model change is not.

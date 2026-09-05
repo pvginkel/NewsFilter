@@ -1,0 +1,26 @@
+# The whole build context crosses the wire on every `kaniko` build, and CI
+# builds this same context with helmCharts.kaniko. The Dockerfile copies only
+# pyproject.toml, poetry.lock, newsfilter/ and data/ — nothing below is copied.
+
+.git
+.github
+.kubecoder
+.vscode
+docs
+scripts
+tests
+*.code-workspace
+CLAUDE.md
+README.md
+Jenkinsfile
+Jenkinsfile.architecture
+pytest.ini
+
+# Local state: .env holds a live API key and the store grows with every run.
+.env
+store
+tmp
+
+__pycache__
+**/__pycache__
+*.py[cod]

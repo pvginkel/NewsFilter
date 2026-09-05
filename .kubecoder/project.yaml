@@ -1,0 +1,25 @@
+projects:
+  # One component. NewsFilter is a single poetry package with one pytest
+  # config, so there is nothing to split on by toolchain or by folder — `root`
+  # owns the whole gate. Python work runs in the `python` toolchain sidecar via
+  # cexec; scripts/arch-validate.py is stdlib-only and runs in the dev
+  # container, so it takes no prefix.
+  root:
+    description: >-
+      NewsFilter — one-shot batch job that scores the NOS Algemeen Nieuws RSS
+      feed with OpenAI and posts qualifying articles to Telegram.
+    jenkins: NewsFilter
+    setup: cexec python poetry install
+    # There is no compile step; the container image is the only build artifact.
+    # `--no-push` proves the Dockerfile without touching the registry — Jenkins
+    # owns registry:5000/newsfilter:latest and the numbered tags. To push a
+    # scratch image by hand, from the repository root:
+    #   kaniko --destination registry:5000/newsfilter:dev
+    build: kaniko --no-push
+    test: cexec python poetry run pytest
+    lint:
+      # Ruff ships with the python toolchain, not with the project's own deps.
+      - cexec python ruff check .
+      # Same check the AaC/NewsFilter pipeline runs (Jenkinsfile.architecture).
+      # Needs outbound HTTPS to architecture.webathome.org.
+      - ./scripts/arch-validate.py docs/architecture/*.yaml
