@@ -144,6 +144,18 @@ unprefixed forms below are what a checkout outside the environment uses.
   models — the prefixes in `Scorer.REASONING_PREFIXES`, i.e. `o*` and
   `gpt-5.5` and up — reject any temperature but the default, so those get `1`;
   the older chat models get `Scorer.TEMPERATURE` (`0.2`).
+- `gpt-5.6-terra` was measured against `gpt-5.6-sol` on the 13-day replay and
+  rejected. It is systematically more generous — higher on 208 of 474 articles
+  and lower on 22, mean 4.07 against 3.55 — which comes out at 2.5 messages a
+  day against 1.8. The extra volume is not extra signal: it reads the band-7
+  clauses loosely, scoring a serval loose in Tilburg a 7 as a
+  "veiligheidswaarschuwing met concreet handelingsadvies", McDonald's being
+  told off over wegwerpbekers a 7 as "handhaving van een landelijke regel",
+  and a party leader warning about the begroting a 7 because the article
+  quotes a number. It fails two cases in `score-cases.yaml`, both by
+  over-scoring. It does catch one thing sol misses — the death of the Noorse
+  koning — but that is sol reading "een keerpunt in het land zelf" literally,
+  which is a gap in the prompt rather than in the model.
 - Cache invalidation is implicit: changing the prompt or switching models
   changes the cache key / directory, so old entries are simply ignored.
 
