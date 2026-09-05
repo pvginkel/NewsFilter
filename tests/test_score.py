@@ -19,24 +19,47 @@ def test_score_2():
 
 
 def test_score_3():
-    # The model puts this one on the 6/7 boundary and it lands either side
-    # across runs, so this case allows 7. The scorer's on-disk cache hides the
-    # variance once a response is cached -- a cold cache is what shows it.
     score(
-        max=7,
         title="Onderzoek NVWA naar ingevoerde dieren na mond-en-klauwzeer-uitbraak Duitsland",
         summary="<p>De Nederlandse Voedsel- en Warenautoriteit (NVWA) onderzoekt of er dieren zijn ge\u00efmporteerd uit het gebied in Duitsland waar mond-en-klauwzeer (MKZ) is opgedoken. Dat schrijft minister Wiersma van Landbouw in een Kamerbrief.</p>\n<p>Vandaag werd duidelijk dat er in Duitsland voor het eerst sinds tientallen jaren MKZ is vastgesteld. Op een boerderij in de plaats H\u00f6now, zo'n twintig kilometer van Berlijn in de deelstaat Brandenburg, zijn drie waterbuffels doodgegaan als gevolg van de ziekte.</p>\n<p>Minister Wiersma zegt dat de NVWA meteen vandaag heeft gekeken of er dieren rechtstreeks vanuit dat gebied naar Nederland zijn verplaatst. Dat lijkt niet het geval te zijn, maar er zijn volgens haar wel signalen dat er mogelijk indirect dieren uit die omgeving zijn ingevoerd. Als dat inderdaad zo is, worden de bedrijven in Nederland die de dieren hebben ge\u00efmporteerd geblokkeerd en verder onderzocht.</p>\n<h2>Blauwtongmonsters</h2>\n<p>Wiersma vraagt ook het onderzoekscentrum Wageningen Bioveterinary Research om nog eens onderzoek te doen naar negatieve monsters van het blauwtongvirus die afgelopen tijd werden ingestuurd. Die worden dan getest op het MKZ-virus. Verder is de Deskundigengroep Dierziekten om een advies gevraagd over de risico's van de uitbraak.</p>\n<p>De minister spreekt verder van een \"verrassende en zeer teleurstellende gebeurtenis\" en wijst erop dat in 2007 voor het laatst een besmetting met het virus werd vastgesteld in een EU-lidstaat.</p>\n<h2>Zeer besmettelijk</h2>\n<p>Mond-en-klauwzeer is een zeer besmettelijke virusziekte bij dieren als koeien, schapen en geiten. Het virus kan zich snel en op verschillende manieren verspreiden. Onder meer via melk, mest en urine van besmette dieren, via de lucht en via mensen, dieren en materialen die met besmette dieren in aanraking zijn gekomen.</p>",
     )
 
 
 def test_score_4():
+    # Weather and the traffic chaos it causes are capped at 3 by the prompt:
+    # immediate is not the same as important. This is the case that made the
+    # rule necessary -- gpt-5.4-mini scored it 4, gpt-5.6-sol scored it 7.
     score(
+        max=4,
         title="Ongelukken in Groningen en Friesland door gladheid en ijzel",
         summary="<p>Op de N31 tussen Garyp en Drachten zijn meerdere automobilisten in de problemen gekomen. Een auto belandde op zijn kop en een andere auto kwam in een sloot terecht. Volgens Omrop Fryslân gleden verschillende auto's tegen de vangrail op de N31.</p><p>De weg is afgesloten en automobilisten kunnen omrijden via de A7 of A32.</p><p>Ook op andere plekken in Nederland is het vanochtend glad. Voor alle provincies geldt code geel tot 11.00 uur. In het zuiden en oosten is er daarnaast kans op dichte mist. Alleen in het Waddengebied wordt geen gladheid door ijzel verwacht.</p>",
     )
 
 
-def score(title: str, summary: str, max=6):
+# The cases above keep the noise out. These two keep the filter from going
+# quiet: a model or prompt change that stops anything from reaching CUTOFF
+# turns NewsFilter into a no-op, and nothing else would notice.
+
+
+def test_score_5():
+    score(
+        min=7,
+        title="Eigen risico zorgverzekering gaat per 2027 omhoog naar 500 euro",
+        summary="<p>De Tweede Kamer heeft ingestemd met een verhoging van het eigen risico in de zorgverzekering. Vanaf 1 januari 2027 betalen verzekerden de eerste 500 euro aan zorgkosten zelf, nu is dat 385 euro.</p><p>De maatregel geldt voor iedereen van 18 jaar en ouder. Het kabinet verwacht dat de zorgpremie hierdoor iets minder hard stijgt. Zorgverzekeraars maken in november bekend wat de premies voor volgend jaar worden.</p>",
+        max=10,
+    )
+
+
+def test_score_6():
+    score(
+        min=7,
+        title="Grote terugroepactie kipfilet om listeriabesmetting, drie mensen ziek",
+        summary="<p>Een producent haalt alle voorverpakte kipfilet met een houdbaarheidsdatum tot 20 september uit de schappen vanwege een besmetting met de listeriabacterie. Het gaat om producten die bij alle grote supermarkten zijn verkocht.</p><p>De NVWA roept consumenten op de producten niet te eten en terug te brengen naar de winkel. Drie mensen zijn ziek geworden, van wie een in het ziekenhuis is opgenomen.</p>",
+        max=10,
+    )
+
+
+def score(title: str, summary: str, min=1, max=6):
     article = NewsArticle(
         link="",
         title=title,
@@ -50,3 +73,4 @@ def score(title: str, summary: str, max=6):
     print(f'Scored {scored.score} because "{scored.reason}"')
 
     assert scored.score <= max, scored.reason
+    assert scored.score >= min, scored.reason

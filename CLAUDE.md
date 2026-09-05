@@ -78,16 +78,23 @@ unprefixed forms below are what a checkout outside the environment uses.
   `kaniko --destination registry:5000/newsfilter:dev` — Jenkins owns `:latest`
   and the numbered tags, so a local build must not use them.
 - Tests: `kc project test` → `cexec python poetry run pytest`. The suite in
-  `tests/test_score.py` calls the real OpenAI API and asserts that
-  low-relevance articles score at or below `6`. The scorer's on-disk cache
-  makes re-runs fast and cheap.
+  `tests/test_score.py` calls the real OpenAI API and guards both ends of the
+  scale: low-relevance articles must stay at or below their `max`, and the two
+  high-side cases must reach `7`, so a model or prompt change that quietly
+  drops everything under `CUTOFF` fails the build instead of going unnoticed.
+  Every case builds its article with `published=now`, so the on-disk cache
+  never hides a regression.
 - Lint: `kc project lint` → `cexec python ruff check .` and
   `./scripts/arch-validate.py docs/architecture/*.yaml`.
 
 ## Conventions
 
-- Scoring criteria live in `data/prompt.txt`. The placeholder `%DATE%` is
-  replaced at request time with today's date in Dutch (`Scorer.get_date()`).
+- Scoring criteria live in `data/prompt.txt`: an anchor per band from 1 to 10,
+  a rule that war/election/crime/company reporting caps at 5, and a rule that
+  transient local disruption caps at 4 and weather at 3 — immediate is not the
+  same as important. The bands are what `App.CUTOFF` cuts against, so the two
+  are calibrated together. The placeholder `%DATE%` is replaced at request time
+  with today's date in Dutch (`Scorer.get_date()`).
 - The model is set in `Scorer.MODEL` (currently `gpt-5.6-sol`). Reasoning
   models — the prefixes in `Scorer.REASONING_PREFIXES`, i.e. `o*` and
   `gpt-5.5` and up — reject any temperature but the default, so those get `1`;
