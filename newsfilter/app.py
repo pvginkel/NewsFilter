@@ -70,7 +70,7 @@ class App:
         articles = list(Loader().load(self.config.last_processed))
 
         if len(articles) > 0:
-            self.config.last_processed = articles[0].published
+            self.config.last_processed = max(a.published for a in articles)
             self._save()
 
         return articles

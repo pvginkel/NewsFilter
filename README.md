@@ -1,13 +1,15 @@
 # NewsFilter
 
-Filters articles from the [NOS Algemeen Nieuws](https://feeds.nos.nl/nosnieuwsalgemeen)
-RSS feed using OpenAI and posts the ones that pass a relevance threshold to Telegram.
+Filters articles from four NOS RSS feeds ([Algemeen Nieuws](https://feeds.nos.nl/nosnieuwsalgemeen),
+[Binnenland](https://feeds.nos.nl/nosnieuwsbinnenland), [Politiek](https://feeds.nos.nl/nosnieuwspolitiek)
+and [Economie](https://feeds.nos.nl/nosnieuwseconomie)) using OpenAI and posts the ones that pass
+a relevance threshold to Telegram.
 
 For each new article, the model is asked to rate how relevant the news is on a
 scale of 1-10 according to the criteria in [`data/prompt.txt`](data/prompt.txt).
 Articles scoring at or above the cutoff (currently `7`) are posted to one or more
 Telegram chats with a short summary and a link to the original article. When the
-NOS feed includes a hero image it is sent as a photo with the summary as the
+article includes a hero image it is sent as a photo with the summary as the
 caption; otherwise a plain text message is sent. Every scored article is also
 written to a daily YAML log under `$STORE_PATH/scorelog/`.
 
@@ -77,7 +79,7 @@ be set for a plain checkout.
 
 Each invocation processes any articles published after the last run (tracked in
 `$STORE_PATH/config.json`), so on the first run it will score everything that
-is currently in the feed.
+is currently in the feeds.
 
 A VS Code launch configuration named **Run NewsFilter** is also provided in
 `.vscode/launch.json`.
@@ -128,7 +130,7 @@ against the architecture validation service — the same check the
 ```
 newsfilter/        Application package (entry point: python -m newsfilter)
   app.py           Orchestrates the run: load → score → log → post
-  loader.py        Reads the NOS RSS feed
+  loader.py        Reads and merges the four NOS RSS feeds
   scorer.py        Calls OpenAI and parses the JSON response
   scorelogger.py   Appends every scored article to a daily YAML log
   poster.py        Posts qualifying articles to Telegram
