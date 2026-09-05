@@ -2,11 +2,20 @@
 # RSS feed, calls two HTTP APIs and writes to a local store. It has no
 # database, no queue and no inbound API — hence no `services:` and no `ports:`.
 
+# `kubePrdWrite` mounts a second kubeconfig for the prd cluster, which is where
+# newsfilter-prd runs. The default read-only file cannot exec into a pod, so the
+# scorelog on the environment's RWX volume -- the only record of what the filter
+# has been scoring in production -- is unreadable from here without it.
 capabilities:
   github: rw
+  kubePrdWrite: true
 
 tools:
   - use: python
+  # The dev image ships no kubectl; `iac` is the toolchain that carries it.
+  # `~/.kube` is the same directory in every tool container, so the grant above
+  # is reached from here as `cexec iac kubectl --kubeconfig ~/.kube/<file> ...`.
+  - use: iac
 
 # `scripts/build.sh` used to run `docker build`; there is no Docker daemon in
 # the pod, so the Dockerfile is built with the `kaniko` client instead.
