@@ -88,13 +88,18 @@ unprefixed forms below are what a checkout outside the environment uses.
   without pushing. To push a scratch image,
   `kaniko --destination registry:5000/newsfilter:dev` — Jenkins owns `:latest`
   and the numbered tags, so a local build must not use them.
-- Tests: `kc project test` → `cexec python poetry run pytest`. The suite in
-  `tests/test_score.py` calls the real OpenAI API and guards both ends of the
-  scale: low-relevance articles must stay at or below their `max`, and the two
-  high-side cases must reach `7`, so a model or prompt change that quietly
-  drops everything under `CUTOFF` fails the build instead of going unnoticed.
-  Every case builds its article with `published=now`, so the on-disk cache
-  never hides a regression. `tests/test_loader.py` covers feed merging,
+- Tests: `kc project test` → `cexec python poetry run pytest`.
+  `tests/test_score.py` is one parametrized test over the cases in
+  `tests/score-cases.yaml`, each with a `min`, a `max` and a `why`. It guards
+  both ends of the scale — noise must stay under its `max`, and the high-side
+  cases must reach `7`, so a model or prompt change that quietly drops
+  everything under `CUTOFF` fails the build instead of going unnoticed. Most
+  of the cases are real articles lifted from the production scorelog, several
+  of them ones `gpt-5.4-mini` graded badly. Bound each case to the rule it
+  tests, not to the number that came back once: a case bounded tighter than
+  the prompt allows will flake. Every case builds its article with
+  `published=now`, so the on-disk cache never hides a regression — which makes
+  this a live API call per case, and about 85 seconds. `tests/test_loader.py` covers feed merging,
   deduplication, newest-first ordering, and cursor filtering — by
   monkeypatching `feedparser.parse` and `RSS_FEEDS`, so it makes no network
   calls.

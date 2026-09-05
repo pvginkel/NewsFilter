@@ -1,0 +1,613 @@
+# The scoring cases, each one a rule the scale gets wrong when the rule is
+# missing. `why` says which rule; keep it filled in, because a case whose
+# point nobody remembers is a case nobody dares change.
+#
+# The hard ones are real articles, lifted from the production scorelog with
+# their original text, several of them ones gpt-5.4-mini graded badly.
+
+- name: individueel-misdrijf
+  min: 1
+  max: 6
+  why: An individual crime, however grave and however many victims. Gravity is not relevance.
+  title: Sporttrainer die kinderkampen begeleidde verdacht van seksueel misbruik
+  summary: '<p>Een 37-jarige man uit Bodegraven wordt verdacht van seksueel misbruik van minderjarigen
+    en het delen van kinderporno. Dat gebeurde mogelijk jarenlang. Dat bleek tijdens een pro-formazitting
+    bij de rechtbank in Den Haag. De man zit al sinds de zomer vast.</p>
+
+    <p>Uit het onderzoek naar de man is volgens justitie naar boven gekomen dat hij zeker
+    drie minderjarigen fysiek heeft misbruikt. Ook bleek daaruit dat de man kinderporno deelde
+    via een versleutelde communicatiedienst. Daarbij gaat het niet om materiaal van de nu
+    bekende slachtoffers, zegt het OM. De verdenkingen staan vooralsnog los van elkaar.</p>
+
+    <p>De man benaderde slachtoffers mogelijk bij een klimvereniging in sportcentrum Pentagon
+    in Dordrecht, waar hij van 2003 tot eind 2019 actief was als sporttrainer.</p>
+
+    <p>Daarnaast was hij van 2003 tot eind 2018 verbonden aan de Zuidhovenkerk in Dordrecht,
+    waar hij kinderkampen begeleidde. Daarna was hij tot juli 2024 lid van de Ichthuskerk
+    in Bodegraven. Volgens het OM is het niet uitgesloten dat hij via die kerken in contact
+    kwam met minderjarigen.</p>
+
+    <h2>Versleutelde apps</h2>
+
+    <p>Het Team Bestrijding Kinderporno en Kindersekstoerisme van de politie kwam de man op
+    het spoor in de zomer van vorig jaar, bij een onderzoek naar kinderporno op versleutelde
+    chatapps. De man viel op omdat hij beelden deelde van seksueel misbruik van soms zeer
+    jonge kinderen in verschillende groepen, aldus het OM.</p>
+
+    <p>In de chats sprak de verdachte veelvuldig over het jarenlange seksueel misbruik van
+    minderjarigen dat hij zou hebben gepleegd, bij zowel jongens als meisjes. De man is aangehouden
+    op 26 juli vorig jaar en zit sindsdien in voorlopige hechtenis.</p>
+
+    <p>Hoeveel slachtoffers hij heeft gemaakt is onduidelijk. De politie is op zoek naar slachtoffers
+    en getuigen.</p>'
+- name: buitenlands-bedrijfsbeleid
+  min: 1
+  max: 6
+  why: A foreign company changing its moderation policy. Consequential, discussed everywhere,
+    and it changes nothing here.
+  title: Meta stopt samenwerking met factcheckers in de VS vanwege 'censuur'
+  summary: '<p>Het Amerikaanse techbedrijf Meta stopt de samenwerking met factcheckers in
+    de Verenigde Staten. Dat heeft eigenaar Mark Zuckerberg vandaag aangekondigd. In plaats
+    daarvan gaat Meta, het moederbedrijf van Facebook en Instagram, over op een systeem waarbij
+    andere gebruikers commentaar kunnen leveren op mogelijk misleidende berichtgeving.</p>
+
+    <p>Het systeem op basis van opmerkingen van gebruikers is vergelijkbaar met Community
+    Notes van X. In dit systeem hebben gebruikers de mogelijkheid om commentaar te geven op
+    potentieel misleidende posts. Het zijn dus niet meer professionele factcheckers die de
+    inhoud toetsen.</p>
+
+    <p>Het bedrijf zegt de samenwerking met experts, onder wie journalisten van grote internationale
+    persbureaus, op omdat die volgens Zuckerberg "politiek bevooroordeeld" zijn. "De factcheckers
+    hebben het vertrouwen meer kwaad dan goed gedaan", zegt Zuckerberg in een videoboodschap.</p>
+
+    <h2>Immigratie en gender</h2>
+
+    <p>Zuckerberg zegt ook het moderatiebeleid rondom bepaalde onderwerpen te willen veranderen.
+    "We willen minder restricties rondom onderwerpen als immigratie en gender." Volgens hem
+    zijn Facebook en Instagram veranderd van inclusieve platforms naar platforms waar mensen
+    te snel de mond wordt gesnoerd.</p>
+
+    <p>Ook worden er volgens hem te veel berichten op feiten gecheckt en gecensureerd. Partijen
+    die de factchecks doen zijn bijvoorbeeld medewerkers van grote internationale persbureaus
+    als AFP, AP en Reuters.</p>
+
+    <p>Zuckerberg zei dat de afgelopen verkiezingen in de VS een grote rol hebben gespeeld
+    bij zijn besluit. "De laatste verkiezingen voelen als een cultureel omslagpunt om vrijheid
+    van meningsuiting opnieuw op de voorgrond te zetten."</p>
+
+    <p>De wijzigingen zullen gevolgen hebben voor Instagram, Facebook en Threads. De socialemediaplatforms
+    hebben wereldwijd miljarden gebruikers. Zuckerberg zegt de aanpassingen de komende maanden
+    te willen doorvoeren.</p>
+
+    <p>Wat dit nieuws betekent voor de platforms van Meta in Europa, is nog niet duidelijk.</p>'
+- name: nvwa-onderzoek-mkz
+  min: 1
+  max: 6
+  why: An investigation into whether animals were imported at all -- a precaution, not a finding.
+    gpt-5.4-mini put this on the 6/7 boundary; gpt-5.6-sol scores it a stable 4.
+  title: Onderzoek NVWA naar ingevoerde dieren na mond-en-klauwzeer-uitbraak Duitsland
+  summary: '<p>De Nederlandse Voedsel- en Warenautoriteit (NVWA) onderzoekt of er dieren zijn
+    geïmporteerd uit het gebied in Duitsland waar mond-en-klauwzeer (MKZ) is opgedoken. Dat
+    schrijft minister Wiersma van Landbouw in een Kamerbrief.</p>
+
+    <p>Vandaag werd duidelijk dat er in Duitsland voor het eerst sinds tientallen jaren MKZ
+    is vastgesteld. Op een boerderij in de plaats Hönow, zo''n twintig kilometer van Berlijn
+    in de deelstaat Brandenburg, zijn drie waterbuffels doodgegaan als gevolg van de ziekte.</p>
+
+    <p>Minister Wiersma zegt dat de NVWA meteen vandaag heeft gekeken of er dieren rechtstreeks
+    vanuit dat gebied naar Nederland zijn verplaatst. Dat lijkt niet het geval te zijn, maar
+    er zijn volgens haar wel signalen dat er mogelijk indirect dieren uit die omgeving zijn
+    ingevoerd. Als dat inderdaad zo is, worden de bedrijven in Nederland die de dieren hebben
+    geïmporteerd geblokkeerd en verder onderzocht.</p>
+
+    <h2>Blauwtongmonsters</h2>
+
+    <p>Wiersma vraagt ook het onderzoekscentrum Wageningen Bioveterinary Research om nog eens
+    onderzoek te doen naar negatieve monsters van het blauwtongvirus die afgelopen tijd werden
+    ingestuurd. Die worden dan getest op het MKZ-virus. Verder is de Deskundigengroep Dierziekten
+    om een advies gevraagd over de risico''s van de uitbraak.</p>
+
+    <p>De minister spreekt verder van een "verrassende en zeer teleurstellende gebeurtenis"
+    en wijst erop dat in 2007 voor het laatst een besmetting met het virus werd vastgesteld
+    in een EU-lidstaat.</p>
+
+    <h2>Zeer besmettelijk</h2>
+
+    <p>Mond-en-klauwzeer is een zeer besmettelijke virusziekte bij dieren als koeien, schapen
+    en geiten. Het virus kan zich snel en op verschillende manieren verspreiden. Onder meer
+    via melk, mest en urine van besmette dieren, via de lucht en via mensen, dieren en materialen
+    die met besmette dieren in aanraking zijn gekomen.</p>'
+- name: gladheid-en-ijzel
+  min: 1
+  max: 4
+  why: 'Weather and the traffic chaos it causes, capped at 3 by the prompt. This is the case
+    that made the rule necessary: gpt-5.4-mini scored it 4, gpt-5.6-sol scored it 7.'
+  title: Ongelukken in Groningen en Friesland door gladheid en ijzel
+  summary: <p>Op de N31 tussen Garyp en Drachten zijn meerdere automobilisten in de problemen
+    gekomen. Een auto belandde op zijn kop en een andere auto kwam in een sloot terecht. Volgens
+    Omrop Fryslân gleden verschillende auto's tegen de vangrail op de N31.</p><p>De weg is
+    afgesloten en automobilisten kunnen omrijden via de A7 of A32.</p><p>Ook op andere plekken
+    in Nederland is het vanochtend glad. Voor alle provincies geldt code geel tot 11.00 uur.
+    In het zuiden en oosten is er daarnaast kans op dichte mist. Alleen in het Waddengebied
+    wordt geen gladheid door ijzel verwacht.</p>
+- name: eigen-risico-omhoog
+  min: 7
+  max: 10
+  why: 'The plainest 7 there is: a national rule, a named amount, a date, everyone over 18.
+    If this ever drops below the cutoff the filter has gone silent.'
+  title: Eigen risico zorgverzekering gaat per 2027 omhoog naar 500 euro
+  summary: <p>De Tweede Kamer heeft ingestemd met een verhoging van het eigen risico in de
+    zorgverzekering. Vanaf 1 januari 2027 betalen verzekerden de eerste 500 euro aan zorgkosten
+    zelf, nu is dat 385 euro.</p><p>De maatregel geldt voor iedereen van 18 jaar en ouder.
+    Het kabinet verwacht dat de zorgpremie hierdoor iets minder hard stijgt. Zorgverzekeraars
+    maken in november bekend wat de premies voor volgend jaar worden.</p>
+- name: terugroepactie-listeria
+  min: 7
+  max: 10
+  why: A recall with something to do about it. The other end of the scale from the noise cases.
+  title: Grote terugroepactie kipfilet om listeriabesmetting, drie mensen ziek
+  summary: <p>Een producent haalt alle voorverpakte kipfilet met een houdbaarheidsdatum tot
+    20 september uit de schappen vanwege een besmetting met de listeriabacterie. Het gaat
+    om producten die bij alle grote supermarkten zijn verkocht.</p><p>De NVWA roept consumenten
+    op de producten niet te eten en terug te brengen naar de winkel. Drie mensen zijn ziek
+    geworden, van wie een in het ziekenhuis is opgenomen.</p>
+- name: kabinet-komt-met-afstandsnorm
+  min: 7
+  max: 10
+  why: A national rule with no price tag, affecting neighbours rather than every household,
+    and with no ingangsdatum. Requiring any of those three is what used to strand it at 6.
+  title: Kabinet komt met afstandsnorm voor windmolens
+  summary: "<p>Het kabinet komt met nieuwe regels voor windmolens. Het gaat om de zogenoemde\
+    \ afstandsnorm: hoe ver moet een windmolen van huizen verwijderd zijn. Die norm wordt\
+    \ twee keer de tiphoogte, het hoogste punt dat een wiek kan bereiken.</p>\n        <p>Een\
+    \ windmolen van 200 meter hoog moet dus minimaal 400 meter van het dichtstbijzijnde huis\
+    \ verwijderd zijn.</p>\n        <p>In mei meldde de Rijksdienst voor Ondernemend Nederland\
+    \ (RVO) dat de bouw van windmolens in Nederland bijna stilvalt. De voornaamste oorzaak\
+    \ is volgens de RVO onduidelijkheid over de regels waar windparken op land aan moeten\
+    \ voldoen. In 2021 sneuvelden de oude regels bij de rechter.</p>\n        <p>Hoewel er\
+    \ op dit moment dus geen landelijke normen zijn, mogen provincies en gemeenten wel vergunningen\
+    \ verlenen. In de praktijk zijn ze hier terughoudend mee.</p>\n        <h2>Geluid en slagschaduw</h2>\n\
+    \        <p>Het kabinet zegt dat windmolens hard nodig zijn, en komt daarom met regels\
+    \ die de bouw en vergunningverlening weer op gang moeten brengen.</p>\n        <p>Staatssecretaris\
+    \ Bertram van Milieu: \"Ook komen er regels voor onder andere geluid, slagschaduw en lichtschittering.\
+    \ Met deze nieuwe regels brengen we de belangen van omwonenden, de woningbouwopgave en\
+    \ de energietransitie beter met elkaar in balans.\"</p>\n        <p>De nieuwe regels worden\
+    \ voor het einde van het jaar naar de Kamer gestuurd.</p>"
+- name: meer-bevoegdheden-veiligheidsdiensten-vanwege
+  min: 7
+  max: 10
+  why: A bill still in consultation that changes what the state may do to your privacy. No
+    date, no money, nothing to act on -- and still news.
+  title: Meer bevoegdheden veiligheidsdiensten vanwege Rusland, China en Iran
+  summary: "<p>De inlichtingendiensten AIVD en MIVD krijgen meer mogelijkheden om \"evidente\
+    \ tegenstanders\" op te sporen en aan te pakken. Dat staat in een wetsvoorstel van het\
+    \ kabinet.</p>\n        <p>Evidente tegenstanders zijn bijvoorbeeld Russische hackers,\
+    \ Chinese spionnen, aanslagplegers van Iran en terroristen van IS.</p>\n        <p>Burgers\
+    \ en andere belanghebbenden kunnen vanaf nu via <a href=\"https://www.internetconsultatie.nl/\"\
+    >internetconsultatie.nl</a> reageren op de wetteksten. Naar verwachting zullen veel vragen\
+    \ gaan over de privacy van Nederlanders. Defensieminister Yesilgöz, verantwoordelijk voor\
+    \ de militaire veiligheidsdienst MIVD, zegt dat die gewaarborgd blijft.</p>\n        <p>\"\
+    De diensten krijgen meer bevoegdheden om sneller en gerichter te reageren op evidente\
+    \ tegenstanders. Maar de toezichthouder blijft controleren\", zegt Yesilgöz in een toelichting\
+    \ op de wet. \"Poetin en zijn vriendjes verdienen niet onze privacy, maar de burgers in\
+    \ Nederland wel.\"</p>\n        <p>De diensten hoeven bijvoorbeeld niet meer vooraf toestemming\
+    \ te vragen voor het (digitaal) volgen van een individuele hacker. \"Dan is die alweer\
+    \ gevlogen\", zegt Yesilgöz.</p>\n        <p>Als de Russische geheime dienst als evidente\
+    \ tegenstander is benoemd, dan kunnen MIVD en AIVD alle hackers aanpakken die waarschijnlijk\
+    \ voor deze dienst opereren. Achteraf controleert de toezichthouder of dit rechtmatig\
+    \ was. Ook kan de toezichthouder lopende operaties stilleggen in het geval van onrechtmatigheden.</p>\n\
+    \        <h2>Informatie vorderen</h2>\n        <p>In de wet worden ook mogelijkheden toegevoegd\
+    \ voor de veiligheidsdiensten om samen te werken met Nederlandse bedrijven en organisaties.\
+    \ En om organisaties te wijzen op risico's die zij lopen door vijanden. Minister Heerma\
+    \ van Binnenlandse Zaken, verantwoordelijk voor de AIVD, wil geen voorbeelden noemen.</p>\n\
+    \        <p>\"Ik ga niet in detail vertellen om welke organisaties het gaat\", zegt Heerma.\
+    \ \"Nu wordt er ook al samengewerkt. Deze wet regelt de wettelijke basis daaronder. Daarbij\
+    \ kan het ook om het vorderen van informatie gaan.\" Het gaat bijvoorbeeld om banken,\
+    \ universiteiten en online platforms, zo staat in het persbericht over de wet.</p>\n \
+    \       <p>Het vorige kabinet wilde bijvoorbeeld 8000 buitenlandse wetenschappers en studenten\
+    \ op Nederlandse universiteiten screenen om te voorkomen dat Nederlandse informatie in\
+    \ handen komt van buitenlandse krachten. China, Rusland en Iran zouden kennis kunnen misbruiken\
+    \ in bijvoorbeeld wapensystemen. Die grote screeningsoperatie <a href=\"https://nos.nl/artikel/2618141-buitenlandse-wetenschappers-toch-niet-massaal-gescreend-op-spionagerisico\"\
+    >was onhaalbaar</a>. Gerichte samenwerking is dat wel, zegt het huidige kabinet.</p>\n\
+    \        <h2>Gevangenissen en IND</h2>\n        <p>Ook kunnen door nieuwe regels de krijgsmacht\
+    \ en de eigen militaire inlichtingen- en veiligheidsdienst makkelijker onderling informatie\
+    \ uitwisselen. Ook de samenwerking met medeoverheden zoals de Dienst Justitiële Inrichtingen\
+    \ (het gevangeniswezen) en de Immigratie- en Naturalisatiedienst (IND) is geregeld.</p>\n\
+    \        <p>Het toezicht op de juiste uitvoering van in de wet komt bij één toezichthouder\
+    \ te liggen, het College van toetsing en toezicht. Nu zijn dat nog de CTIVD en de Toetsingscommissie\
+    \ Inzet Bevoegdheden. Of door de samenvoeging het budget omlaag gaat wil Heerma niet zeggen.\
+    \ \"Dat is niet het doel van deze wet.\"</p>\n        <p>Beide toezichthouders hadden\
+    \ de afgelopen jaren kritiek op de werkwijze van de AIVD en de MIVD. Daarbij ging het\
+    \ om het <a href=\"https://nos.nl/artikel/2560145-aivd-en-mivd-vergaren-steeds-vaker-informatie-in-het-geheim\"\
+    >verzamelen</a> van informatie over individuen en om het <a href=\"https://nos.nl/artikel/2621135-inlichtingendiensten-houden-zich-niet-aan-regels-voor-datasets-met-persoonsgegevens\"\
+    >bewaren</a> van grote hoeveelheden persoonsgegevens.</p>"
+- name: box-3-splijt-coalitie
+  min: 7
+  max: 10
+  why: A tax proposal that is still being fought over, hitting savers rather than everyone.
+    'Not yet decided' and 'only part of households' must not disqualify it.
+  title: 'Box 3 splijt coalitie: VVD wil snelle invoering winstbelasting op vermogen'
+  summary: "<p>De coalitie stevent af op een groot conflict over de belasting op vermogen\
+    \ (box 3). Uit stukken van het ministerie van Financiën, die in handen van de NOS zijn,\
+    \ blijkt dat snelle invoering van de vermogenswinstbelasting toch nog een optie is. De\
+    \ VVD is vastbesloten om zo'n belasting nog voor het einde van het jaar voor aandelen\
+    \ in te voeren, maar coalitiegenoten CDA en D66 zien dit niet zitten.</p>\n        <p>Met\
+    \ deze nog geheime stukken in de hand was minister Heinen van Financiën (VVD) de afgelopen\
+    \ weken een heel eind op weg om met JA21 en SGP een begrotingsdeal te sluiten. Ook deze\
+    \ partijen willen voor aandelen vanaf 2028 een vermogenswinstbelasting invoeren, wat betekent\
+    \ dat de schatkist komende jaren miljarden minder binnenkrijgt.</p>\n        <p>Bij een\
+    \ volledige vermogenswinstbelasting komt er in totaal tussen de 11 en 25 miljard euro\
+    \ minder binnen. Dat komt onder meer doordat de belasting pas wordt geïnd als bijvoorbeeld\
+    \ aandelen worden verkocht.</p>\n        <h2>Onderhandelingen liepen hoog op</h2>\n  \
+    \      <p>Heinen werd teruggefloten door D66 en CDA. Zij zien geen politiek draagvlak\
+    \ om miljarden voor vermogenden vrij te maken, terwijl er bezuinigd wordt op de sociale\
+    \ zekerheid. De twee partijen willen de steun van oppositiepartij Pro niet verliezen,\
+    \ die in de onderhandelingen als eis stelt de belasting op vermogens juist te verhogen.</p>\n\
+    \        <p>De begrotingsonderhandelingen tussen D66, VVD en CDA liepen hierdoor hoog\
+    \ op. De partijen konden het niet eens worden en besloten daarom na lange gesprekken het\
+    \ onderwerp box 3 <a href=\"https://nos.nl/artikel/2629305-onduidelijkheid-over-box-3-blijft-coalitie-wil-wetsvoorstel-vooruitschuiven\"\
+    >te parkeren</a>.</p>\n        <p>De coalitiepartijen hebben verschillende lezingen over\
+    \ wat er nu precies is afgesproken. Enerzijds is te horen dat een besluit erover is geparkeerd.\
+    \ Maar minister Heinen zei vandaag alsnog versneld de vermogenswinstbelasting te willen\
+    \ invoeren: \"Het kan\" en \"Ik ben er wel al uit\", zei hij bij de ministerraad. D66-staatssecretaris\
+    \ Eerenberg (Fiscaliteit) moet de hervormingen rond box 3 doorvoeren.</p>\n        <h2>Verschil\
+    \ tussen vermogenswinstbelasting en vermogensaanwasbelasting</h2>\n        <p>Bij vermogensaanwasbelasting\
+    \ betaal je elk jaar over de winst die je hebt gemaakt, ook als die winst nog 'vastzit'\
+    \ in bijvoorbeeld aandelen.</p>\n        <p>Bij vermogenswinstbelasting betaal je pas\
+    \ op het moment dat je bijvoorbeeld je aandelen of cryptomunten verkoopt.</p>\n      \
+    \  <p>Afgelopen jaren zeiden opeenvolgende bewindslieden dat het niet mogelijk was om\
+    \ op korte termijn de vermogenswinstbelasting in te voeren. Maar volgens inschattingen\
+    \ van ambtenaren van Financiën zou het in theorie dus toch nog wel kunnen. De Eerste en\
+    \ Tweede Kamer moeten dan wel voor het einde van het jaar instemmen met dit plan, is in\
+    \ de stukken te lezen.</p>\n        <p>Ambtenaren waarschuwen ook voor nadelen: de Belastingdienst\
+    \ kan bijvoorbeeld in het eerste jaar, maar mogelijk langer, de belastingaangiftes nauwelijks\
+    \ controleren omdat de systemen nog niet op orde zijn.</p>\n        <p>JA21 voert intussen\
+    \ de druk op het kabinet op. De partij wil alleen nog een begrotingsdeal sluiten als de\
+    \ vermogensbelasting op korte termijn wordt ingevoerd. \"Wat ons betreft is vermogensaanwas\
+    \ een gepasseerd station\", zegt JA21-Kamerlid Michiel Hoogeveen. \"Het is een fundamenteel\
+    \ oneerlijk systeem.\"</p>\n        <h2>Box 3 is hoofdpijndossier</h2>\n        <p>Box\
+    \ 3 is een hoofdpijndossier voor de politiek, sinds de Hoge Raad eind 2021 <a href=\"\
+    https://nos.nl/artikel/2410757-hoge-raad-spaartaks-in-strijd-met-de-wet\">een streep zette</a>\
+    \ door de manier waarop de Belastingdienst de hoogte van de belasting berekende.</p>\n\
+    \        <p>Daarom is er op dit moment <a href=\"https://nos.nl/artikel/2604462-belastingaangifte-kan-weer-nu-ook-meteen-werkelijk-rendement-doorgeven\"\
+    >een tijdelijk systeem</a>, dat vooral voor mensen met hoge rendementen voordelig is.\
+    \ De schatkist krijgt daardoor nu al jaarlijks zeker 2,4 miljard euro minder binnen.</p>\n\
+    \        <p>Er is een politieke meerderheid voor de invoering van een vermogenswinstbelasting,\
+    \ alleen was dat volgens opeenvolgende bewindslieden dus niet op kort termijn mogelijk.\
+    \ De afgelopen jaren discussieerde de politiek daarom over de vraag: wat doe je in de\
+    \ tussentijd?</p>\n        <p>De Tweede Kamer stemde met tegenzin in met de invoering\
+    \ van een tijdelijk compromis: over het rendement op spaargeld en beleggingen betaal je\
+    \ elk jaar belasting (vermogensaanwasbelasting), terwijl je op een tweede woning of aandelen\
+    \ in startende ondernemingen pas bij verkoop afrekent.</p>\n        <p>CDA en VVD stemden\
+    \ in de Tweede Kamer ook voor dit plan, maar kregen na een storm van kritiek uit de achterban\
+    \ grote twijfels. In de Eerste Kamer steunen ze het voorstel niet meer en is nu <a href=\"\
+    https://nos.nl/artikel/2621107-eerste-kamer-stelt-stemming-over-box-3-voorlopig-uit-nieuw-voorstel-beloofd\"\
+    >een meerderheid uit zicht</a>.</p>\n        <h2>FNV: redelijk bizar</h2>\n        <p>Coalitiepartijen\
+    \ D66, VVD en CDA zijn het over één ding wel eens: dat de vakbonden en werkgevers betrokken\
+    \ moeten worden in het probleem rond box 3. Het idee is dat er dan in één keer een grote\
+    \ deal gesloten kan worden over box 3 en de sociale zekerheid. Maar de bonden en werkgevers\
+    \ zeggen nog van niets te weten.</p>\n        <p>Werkgeversorganisatie VNO-NCW zegt verrast\
+    \ te zijn. Vakbond FNV noemt het \"redelijk bizar\" dat het kabinet hiervoor naar de polder\
+    \ wijst. \"Het is aan het kabinet om dit verder uit te werken\", zegt een woordvoerder.\
+    \ \"Voor ons is daarbij één ding helder: die begroting mag niet ten koste gaan van de\
+    \ sociale zekerheid. Dat zullen we niet accepteren.\"</p>"
+- name: dode-in-utrecht-door
+  min: 7
+  max: 10
+  why: A disease killing someone in the Netherlands for the first time, with no handelingsadvies
+    attached. Health news does not need an action to matter.
+  title: Dode in Utrecht door het westnijlvirus, opgelopen in Nederland
+  summary: "<p>In de provincie Utrecht is iemand overleden aan de gevolgen van het westnijlvirus.\
+    \ Diegene had het virus in Nederland opgelopen en is gestorven in het ziekenhuis. Dat\
+    \ meldt het RIVM.</p>\n        <p>Vorige week werd het virus voor het eerst <a href=\"\
+    https://nos.nl/artikel/2627232-westnijlvirus-aangetroffen-bij-bloeddonor-in-nederland-eerste-keer-sinds-2020\"\
+    >sinds 2020 aangetroffen</a> in Nederland. Dat gebeurde bij een bloeddonor in de provincie\
+    \ Utrecht die niet recent in het buitenland was geweest.</p>\n        <p>Het gaat niet\
+    \ om dezelfde persoon, laat de woordvoerder weten. </p>\n        <h2>Twee patiënten</h2>\n\
+    \        <p>Het RIVM heeft het westnijlvirus dit jaar gevonden in de provincies Utrecht,\
+    \ Noord-Brabant en Zuid-Holland. Het kan zijn dat het virus op meer plekken in Nederland\
+    \ voorkomt, zegt het RIVM.</p>\n        <p>Er ligt nog zeker een patiënt in het ziekenhuis.\
+    \ Andere meldingen worden nog onderzocht. Over hun medische toestand doet het gezondheidsinstituut\
+    \ geen verdere mededelingen.</p>\n        <h2>Meestal geen klachten</h2>\n        <p>Het\
+    \ westnijlvirus komt vooral voor bij vogels. Het kan bij de gewone huissteekmug belanden\
+    \ wanneer die zich voedt met het bloed van een besmette vogel. Een mug kan het vervolgens\
+    \ weer overdragen op mensen en andere dieren.</p>\n        <p>Het overgrote deel van de\
+    \ mensen (80 procent) krijgt geen klachten. Ongeveer 19 procent krijgt griepklachten en\
+    \ 1 procent krijgt neurologische klachten. Vooral kwetsbare mensen lopen risico.</p>\n\
+    \        <p>Mensen kunnen het virus niet verder verspreiden. Het RIVM zegt dat het risico\
+    \ om het westnijlvirus in Nederland op te lopen klein blijft, net als het risico om er\
+    \ ziek van te worden.</p>"
+- name: meer-nepmails-over-ideal
+  min: 7
+  max: 10
+  why: 'A phishing wave: the plainest ''watch out for this'' there is.'
+  title: 'Meer nepmails over iDeal en Wero in omloop: ''Klik er niet op'''
+  summary: "<p>In de afgelopen maanden worden er meer nepmails gestuurd over de betalingsservice\
+    \ iDeal en de overgang naar Wero. Dat blijkt uit cijfers van de Fraudehelpdesk, zegt die\
+    \ organisatie na <a href=\"https://www.telegraaf.nl/financieel/geld/door-deze-nepmails-raak-je-veel-geld-kwijt-oplichters-slaan-slag-bij-overgang-van-ideal-naar-wero/160430241.html\"\
+    >berichtgeving</a> in De Telegraaf. Ook Currence, het bedrijf achter iDeal en Wero, bevestigt\
+    \ de cijfers.</p>\n        <p>Er zijn verschillende frauduleuze mails in omloop. Daarin\
+    \ wordt <a href=\"https://nos.nl/artikel/2595710-betaaldienst-ideal-wordt-wero-trap-niet-in-oplichting-er-verandert-niets\"\
+    >ten onrechte</a> gezegd dat consumenten actie moeten ondernemen om de overgang van iDeal\
+    \ naar Wero mogelijk te maken. Ze moeten dan bijvoorbeeld op een link klikken en betalingsgegevens\
+    \ achterlaten.</p>\n        <h2>Actie</h2>\n        <p>Begin dit jaar kreeg de Fraudehelpdesk\
+    \ nog slechts enkele nepmails (phishing) per dag doorgestuurd van consumenten. In juli\
+    \ liep dat op naar ongeveer honderd per dag.</p>\n        <p>Zo gaat er een phishingmail\
+    \ rond waarin oplichters beweren dat iDeal per direct vervangen wordt door Wero. Consumenten\
+    \ worden opgeroepen actie te ondernemen omdat ze nog geld zouden terugkrijgen. Om die\
+    \ terugbetaling te ontvangen, zouden ze via een link hun gegevens moeten verifiëren.</p>\n\
+    \        <p>In de nog lopende maand augustus lijkt het aantal meldingen weer iets terug\
+    \ te lopen, zegt Currence.</p>\n        <h2>Wero</h2>\n        <p>Via iDeal kunnen in\
+    \ Nederland online betalingen gedaan worden. Het wordt vervangen door het Europese systeem\
+    \ Wero. De komende maanden zijn in Nederland bij online betalingen beide logo's te zien.</p>\n\
+    \        <p>Uiteindelijk zal het iDeal-logo verdwijnen, maar dat zal geleidelijk gaan.\
+    \ Het bedrijf verwacht dat later dit jaar de eerste grotere webwinkels dit aanpassen.\
+    \ Eind 2027 zijn dan alle webwinkels overgestapt, is het streven.</p>\n        <p>Daniël\
+    \ van Delft, directeur van Currence, herkent het beeld dat criminelen proberen gegevens\
+    \ en geld proberen af te troggelen via nepmails. \"Al sinds wij bekendmaakten dat deze\
+    \ rebranding zou plaatsvinden, zien we dat dit geprobeerd wordt.\"</p>\n        <p>Eerder\
+    \ <a href=\"https://nos.nl/artikel/2595710-betaaldienst-ideal-wordt-wero-trap-niet-in-oplichting-er-verandert-niets\"\
+    >waarschuwde</a> Van Delft al voor deze praktijken. Hij benadrukt dat de klant niets hoeft\
+    \ te doen voor de overgang. \"Klik niet op mails die je oproepen om op links te klikken.\
+    \ Check bij je bank wat het mailtje betekent.\"</p>"
+- name: meta-schikt-voor-miljarden
+  min: 1
+  max: 5
+  why: Billions, children, addiction -- and a foreign corporate settlement that changes nothing
+    here. A big number is not relevance; production scored this an 8. Bounded at 5 rather than
+    4 because 5 is what the prompt's own cap on nieuws over losse bedrijven allows, and a case
+    should test the rule rather than the number that happened to come back once.
+  title: Meta schikt voor miljarden in zaak over verslaafd maken van kinderen
+  summary: "<p>Meta heeft een schikking getroffen in de grote rechtszaak in de VS over het\
+    \ verslaafd maken van jongeren aan sociale media. Het moederbedrijf van Facebook en Instagram\
+    \ heeft ingestemd om zo'n 17 miljard dollar te betalen, omgerekend zo'n 14,5 miljard euro.\
+    \ Ook belooft Meta de apps aan te passen.</p>\n        <p>Afgelopen week begon de <a href=\"\
+    https://nos.nl/artikel/2627352-megarechtszaak-tegen-meta-in-de-vs-begint-maakt-het-bedrijf-jongeren-bewust-verslaafd\"\
+    >rechtszaak</a> in Californië. Bijna dertig Amerikaanse staten spanden die aan omdat het\
+    \ techbedrijf jongeren bewust verslaafd zou maken aan sociale media. Ook zou Meta tactieken\
+    \ gebruiken om gebruikers zo veel mogelijk tijd door te laten brengen op de platforms.</p>\n\
+    \        <p>Ook werd Meta ervan beschuldigd dat het wetten heeft overtreden door regelmatig\
+    \ gegevens te verzamelen van kinderen onder de 13 jaar zonder toestemming van hun ouders.</p>\n\
+    \        <h2>Verslavende technieken</h2>\n        <p>Meerdere staten wilden Meta dwingen\
+    \ de verslavende technieken achter de platforms aan te passen. Zo willen ze dat het bedrijf\
+    \ stopt met verdwijnende berichten op accounts van kinderen, de zogenoemde 'stories' op\
+    \ Facebook en Instagram.</p>\n        <p>Ook moeten \"dopamine-manipulerende aanbevelingsalgoritmes\"\
+    \ verdwijnen, zoals het automatisch afspelen van video's. Daarmee moet 'eindeloos scrollen'\
+    \ worden voorkomen. Het leuk vinden van berichten (liken) moet ook niet meer mogelijk\
+    \ zijn, vinden de staten.</p>\n        <h2>Aanpassingen</h2>\n        <p>Met de schikking\
+    \ komt een einde aan de rechtszaak. Naast het betalen van de schikking belooft Meta een\
+    \ reeks veiligheidsmaatregelen in te voeren op de platforms.</p>\n        <p>Zo komt er\
+    \ een strikte limiet voor de dagelijkse gebruiksduur en pauzes voor kinderen op Instagram\
+    \ en Facebook. Verder zal het bedrijf pushmeldingen tijdens schooluren uitschakelen en\
+    \ leeftijdscontroles uitvoeren om pesten en ander schadelijk materiaal te voorkomen. En\
+    \ als laatste komen er strengere ouderlijke controles en wordt het aantal likes verborgen\
+    \ bij minderjarige gebruikers.</p>"
+- name: nog-400-schepen-vast
+  min: 1
+  max: 5
+  why: Dramatic, geopolitically serious, and still war reporting with no concrete consequence
+    stated. Production scored it 8.
+  title: Nog 400 schepen vast in Perzische Golf, Iran claimt controle over Straat van Hormuz
+  summary: "<p>Sinds het begin van de Iranoorlog een half jaar geleden liggen nog altijd 400\
+    \ schepen vast in de Perzische Golf. Dat <a href=\"https://www.imo.org/en/mediacentre/pressbriefings/pages/statement-on-the-ongoing-crisis-in-the-strait-of-hormuz.aspx\"\
+    >meldt</a> de Internationale Maritieme Organisatie (IMO). Ook zitten nog 6000 opvarenden\
+    \ vast, zegt de organisatie.</p>\n        <p>\"Zes maanden na het begin van het conflict\
+    \ in het Midden-Oosten is de situatie in de Straat van Hormuz nog steeds onopgelost\"\
+    , aldus IMO's secretaris-generaal Arsenio Dominguez.</p>\n        <p>De wereldwijde economische\
+    \ impact door verstoringen van handelsstromen voor olie, kunstmest en andere grondstoffen\
+    \ door de blokkade is groot, zegt Dominguez. Sinds het begin van het conflict noteerde\
+    \ de IMO minstens zeventig aanvallen op de internationale scheepvaart met negentien doden\
+    \ tot gevolg.</p>\n        <p>De IMO-raad nam vorige maand een resolutie aan waarin wordt\
+    \ opgeroepen tot een \"gecoördineerde en duurzame terugkeer naar onbelemmerde navigatie\
+    \ door de Straat van Hormuz\".</p>\n        <h2>Iran claimt controle</h2>\n        <p>Vannacht\
+    \ claimde de Iraanse Revolutionaire Garde op Telegram dat Iran de volledige controle heeft\
+    \ over de Straat van Hormuz, waar voor het uitbreken van de oorlog 20 procent van de wereldwijde\
+    \ oliehandel doorheen ging. De VS beweert dat de smalle zee-engte gewoon open is en onder\
+    \ Amerikaanse controle staat.</p>\n        <p>Commandant Brown van het Amerikaanse militaire\
+    \ commando voor het Midden-Oosten zei donderdag dat de gehele Straat van Hormuz mijnvrij\
+    \ was gemaakt en de internationale scheepvaart vrij kon doorvaren.</p>\n        <p>Iran\
+    \ zegt dat schepen die zonder toestemming door de Straat van Hormuz varen worden tegengehouden.\
+    \ De claim van de VS dat de Straat van Hormuz open is, wordt als \"flagrante leugen\"\
+    \ afgedaan.</p>\n        <p>Volgens de Britse maritieme organisatie UKMTO passeerden er\
+    \ de afgelopen week gemiddeld 29 vrachtschepen per dag door de straat. Voor het begin\
+    \ van de oorlog waren dat <a href=\"https://nos.nl/artikel/2606837-straat-van-hormuz-niet-potdicht-dagelijks-zo-n-2-miljoen-olievaten-vervoerd\"\
+    >tot wel 130 schepen</a>.</p>\n        <p>De VS probeert Iran de afgelopen periode onder\
+    \ druk te zetten met <a href=\"https://nos.nl/artikel/2628157-vs-komt-met-economische-d-day-tegen-iran-maar-teheran-heeft-tegenwapen-hormuz\"\
+    >een economische oorlog</a>. Washington wil Iran volledig isoleren van de wereldeconomie\
+    \ en dreigt ook andere landen en bedrijven te straffen die zaken blijven doen met Teheran.</p>\n\
+    \        <p>Iran kondigde vergelding aan en wil al langer dat de VS de verplichtingen\
+    \ uit de (<a href=\"https://nos.nl/artikel/2626093-nieuwe-eisen-iran-voor-heropening-straat-van-hormuz-snelle-deal-lijkt-uit-zicht\"\
+    >inmiddels verlopen</a>) intentieverklaring voor vrede <a href=\"https://nos.nl/artikel/2618288-akkoord-tussen-iran-en-vs-over-tekst-voor-intentieverklaring-lijkt-dichtbij\"\
+    >uit juni</a> nakomt. Drie weken geleden stelde Iran de VS <a href=\"https://nos.nl/artikel/2626093-nieuwe-eisen-iran-voor-heropening-straat-van-hormuz-snelle-deal-lijkt-uit-zicht\"\
+    >nieuwe eisen</a> voor heropening van de Straat van Hormuz. </p>"
+- name: zeelandbrug-komende-weken-dicht
+  min: 1
+  max: 4
+  why: Immediate and concrete, but local infrastructure. Immediate is not the same as important;
+    production scored it 7.
+  title: Zeelandbrug komende weken dicht voor onderhoud
+  summary: "<p>De Zeelandbrug is vanaf morgen tot en met 12 oktober dicht voor voertuigen\
+    \ wegens onderhoud. Het beweegbare deel van de brug moet worden gerenoveerd, meldt de\
+    \ provincie Zeeland.</p>\n        <p>Er zijn scheuren ontstaan in het stalen rijdek van\
+    \ de basculebrug, het beweegbare deel van de Zeelandbrug. Die zijn onder meer veroorzaakt\
+    \ door veroudering en door zwaar verkeer dat er dagelijks op rijdt, meldt de provincie.</p>\n\
+    \        <p>De brug is in 1965 aangelegd, in 2016 werd het een rijksmonument. Er rijden\
+    \ dagelijks ongeveer 15.000 voertuigen over de verbinding tussen Noord-Beveland en Zierikzee\
+    \ op Schouwen-Duiveland.</p>\n        <p>Het verkeer wordt de komende zes weken via de\
+    \ Oosterscheldekering omgeleid. Het landbouwverkeer mag op vaste momenten 's nachts over\
+    \ de Oosterscheldekering en via de A4 en A58 rijden. Fietsers en bromfietsers kunnen gebruiken\
+    \ blijven maken van de brug.</p>\n        <p>De provincie vraagt mensen om thuis te werken\
+    \ of om buiten de spits om te reizen. Mensen die reizen met het openbaar vervoer moeten\
+    \ rekening houden met een langere reistijd.</p>"
+- name: onderhandelingen-prinsjesdag-moeizaam-kabinet
+  min: 1
+  max: 5
+  why: Process coverage of a dossier that genuinely matters. The akkoord is a 7; the negotiating
+    about it is not, or one event becomes ten messages.
+  title: Onderhandelingen Prinsjesdag moeizaam, kabinet intern verdeeld
+  summary: "<p>De drie coalitiepartijen D66, VVD en CDA zijn het onderling nog niet eens over\
+    \ de begrotingen voor Prinsjesdag. Dat zeggen verschillende bronnen vanuit de oppositiepartijen.\
+    \ Ook vicepremier Van den Brink (CDA) zei vanmiddag dat de puzzel de komende dagen vooral\
+    \ \"intern\" moeten worden gelegd.</p>\n        <p>De regeringspartijen discussiëren over\
+    \ bij welke burgers de rekening terecht moet komen, met andere woorden: hoe de belastingdruk\
+    \ voor de Rijksuitgaven verdeeld moet worden.</p>\n        <p>Ondertussen onderhandelt\
+    \ het kabinet wel met de oppositiepartijen voor steun. En dat is lastig als het minderheidskabinet\
+    \ het onderling nog niet eens is, zeggen zij. Aanstaande vrijdag wil het minderheidskabinet\
+    \ 'een klap geven' op de stukken die op Prinsjesdag worden gepresenteerd. Het wil dan\
+    \ eigenlijk ook al weten of er voldoende steun is in de Tweede Kamer.</p>\n        <h2>Nog\
+    \ niks concreets</h2>\n        <p>Volgens fractievoorzitter Markuszower van de Groep Markuszower,\
+    \ die vandaag aanschoof bij de premier en de vicepremiers, ligt er een paar dagen van\
+    \ tevoren \"nog niks concreets op tafel\".</p>\n        <p>Ook BBB-leider Vermeer, die\
+    \ gisteren met minister Heinen van Financiën sprak en vanmiddag een gesprek had met de\
+    \ top van het kabinet, betwijfelt of het lukt om vrijdag al verzekerd te zijn van een\
+    \ meerderheid. Het kabinet is volgens hem \"rijkelijk laat\" met de oppositie in gesprek\
+    \ gegaan.</p>\n        <p>Gisteren hadden andere oppositiepartijen er na hun afspraak\
+    \ met de coalitie ook al <a href=\"https://nos.nl/artikel/2628171-muurvast-rommeltje-en-kleurloos-steun-voor-begroting-kabinet-nog-steeds-ver-weg\"\
+    >geen goed</a> woord voor over. \"Het zit muurvast\", zegt Pro-leider Klaver. \"We zijn\
+    \ er nog lang niet\", zegt SGP-Kamerlid Flach.</p>\n        <h2>'Vrijheidsbijdrage'</h2>\n\
+    \        <p>De moeilijkheid ligt bij een aantal grote dossiers, waarbij het om miljarden\
+    \ gaat. Van de 'vrijheidsbijdrage' voor burgers uit het coalitieakkoord is duidelijk dat\
+    \ die niet ongeschonden de eindstreep haalt. Maar waar de rekening voor de extra defensie-uitgaven\
+    \ dan moet komen te liggen is niet duidelijk.</p>\n        <p>Deze verhoging van de inkomstenbelasting,\
+    \ bedacht door het CDA, zou de koopkracht te veel aantasten en ligt veel partijen van\
+    \ links tot rechts zwaar op de maag.</p>\n        <p>Een soortgelijk verhaal geldt voor\
+    \ de andere dossiers waarover nu met de oppositie wordt gesproken. Zoals box 3, de belasting\
+    \ op vermogen die het <a href=\"https://nos.nl/artikel/2621107-eerste-kamer-stelt-stemming-over-box-3-voorlopig-uit-nieuw-voorstel-beloofd\"\
+    >kabinet wil gaan aanpassen</a>. Door deze aanpassing loopt de staatskas (tijdelijk) geld\
+    \ mis.</p>\n        <p>Pro zou daar naar verwachting mee kunnen leven, op voorwaarde dat\
+    \ de rekening van het misgelopen geld bij vermogenden terechtkomt en niet op het bordje\
+    \ van mensen die minder verdienen. Het is niet duidelijk of het kabinet daaraan tegemoetkomt.</p>\n\
+    \        <h2>Puzzel 'intern' leggen</h2>\n        <p>Een meerderheid in de Tweede Kamer,\
+    \ van coalitie tot oppositie, is het er ook over eens dat gekeken moet worden naar het\
+    \ kabinetsplan om het <a href=\"https://nos.nl/artikel/2601116-nieuw-kabinet-wil-uitkeringen-voor-hoge-inkomens-fors-verlagen\"\
+    >maximumdagloon te verlagen</a>. Daardoor zouden uitkeringen van mensen die relatief meer\
+    \ verdiend hebben, te veel omlaag gaan.</p>\n        <p>Verder gaat de verhoging van het\
+    \ eigen risico in de zorg volgend jaar (van 385 naar 455 euro per jaar) waarschijnlijk\
+    \ niet door. Maar de vraag is ook hier weer: hoe moet dat gat in de begroting worden betaald\
+    \ en is daar voldoende steun voor vanuit de oppositie?</p>\n        <p>Als dat niet voor\
+    \ vrijdag lukt dan kan er het weekend nog doorgepraat worden. Maar de Prinsjesdagstukken\
+    \ moeten echt vóór 1 september bij de Raad van State binnen zijn voor advies. Officieel\
+    \ heeft het kabinet dus tot en met maandag 31 augustus de tijd.</p>\n        <p>Het lijkt\
+    \ op dit moment uitgesloten dat er maandag al een compleet akkoord met de oppositie ligt\
+    \ met een meerderheid in de Tweede en Eerste Kamer. Bronnen denken dat die onderhandelingen\
+    \ nog wel tot de derde dinsdag van september zullen doorgaan.</p>"
+- name: verdeelde-reacties-op-rapport
+  min: 1
+  max: 5
+  why: 'Reactions to a report. The same rule from the other side: it is the development that
+    scores, not the response to it.'
+  title: Verdeelde reacties op rapport over stikstofplannen, nieuwe rechtszaken verwacht
+  summary: "<p>Boeren, bouwers en natuurbeschermers reageren wisselend op de analyse die het\
+    \ Planbureau voor de Leefomgeving (PBL) maakte over de <a href=\"https://nos.nl/artikel/2620433-kabinet-wil-nederland-gebied-voor-gebied-van-het-stikstofslot-halen\"\
+    >stikstofplannen</a> van het kabinet. Het PBL <a href=\"https://nos.nl/artikel/2629576-stikstofplannen-halen-land-niet-van-het-slot-wel-grote-stap-vooruit\"\
+    >concludeert</a> dat Nederland niet van het stikstofslot gaat, maar het kabinet wel belangrijke\
+    \ stappen zet. Voor een deel van de boeren zijn de plannen niet haalbaar.</p>\n      \
+    \  <p>Bouwend Nederland is blij met de beoordeling van het PBL. \"Het stikstofpakket haalt\
+    \ Nederland uit de impasse en brengt perspectief\", zegt voorman Arno Visser. Het is nu\
+    \ tijd voor \"uitwerking en uitvoering\".</p>\n        <p>Het Economisch Instituut voor\
+    \ de Bouw benadrukt dat de problemen rond vergunningverlening nog niet zijn opgelost.\
+    \ De situatie voor de bouw wordt pas echt beter als er voor kleine beetjes stikstof geen\
+    \ vergunning meer nodig is.</p>\n        <p>Afzwakking van het maatregelenpakket is geen\
+    \ optie, vinden natuurorganisaties. Zo ziet Natuurmonumenten de maatregelen als de \"\
+    minimale ondergrens van wat nodig is voor natuurherstel\". Daar sluit Natuur &amp; Milieu\
+    \ zich bij aan. \"Dit pakket is nodig om de balans tussen landbouw en natuur weer te herstellen.\"\
+    </p>\n        <h2>Natuur wordt verbeterd</h2>\n        <p>De natuur gaat er inderdaad\
+    \ op vooruit, blijkt uit de analyse van het PBL. Hoewel in 2035 het stikstofprobleem in\
+    \ slechts 14 van de 120 gebieden helemaal is opgelost, neemt de mate van overbelasting\
+    \ in de andere gebieden wel fors af, is te lezen in het rapport.</p>\n        <p>Daarvoor\
+    \ moet wel de stikstofuitstoot in 2035 flink lager liggen dan in 2019. Voor de landbouwsector\
+    \ is het doel 42 tot 46 procent minder stikstofuitstoot. Verkeer en industrie moeten de\
+    \ uitstoot straks met de helft verminderen.</p>\n        <p>Maar Nederland gaat niet direct\
+    \ \"van het stikstofslot\", wat het kabinet wel graag wilde. \"Maar wij kunnen ons ook\
+    \ geen pakket voorstellen dat dit wél kan\", zegt het PBL daarover. Het maatregelenpakket\
+    \ van minister Van Essen vraagt om een inspanning die grenst aan wat in tien jaar uitvoerbaar\
+    \ is, aldus het planbureau.</p>\n        <p>Toch vindt Johan Vollenbroek van Mobilisation\
+    \ for the Environment (MOB) dat het \"veel te weinig\" is wat de minister van plan is.\
+    \ Hij is kritisch over het feit dat het stikstofdoel van het kabinet pas in 2035 wordt\
+    \ bereikt, in plaats van in 2030. Volgens de MOB-voorman is een halvering van de veestapel\
+    \ nodig om Nederland van het slot te krijgen.</p>\n        <p>\"Als we dit wankele beleid\
+    \ zien, dan zullen wij toch weer de rechter gaan vragen om natuurvergunningen in te trekken\"\
+    , kondigt Vollenbroek aan, die momenteel al tientallen soortgelijke procedures voert.</p>\n\
+    \        <h2>Grote offers van boeren</h2>\n        <p>Waar MOB de plannen te zwak vindt,\
+    \ vinden veel boeren ze juist te zwaar. Over de eisen die aan veehouderijen gesteld worden\
+    \ leven grote zorgen bij boerenbelangenorganisatie Agractie, die vindt \"dat Nederland\
+    \ de weg volledig kwijt is\". Voldoen aan de nieuwe eisen is te duur voor veel veehouders,\
+    \ waarschuwt de organisatie al langer.</p>\n        <p>Uit de analyse van het planbureau\
+    \ blijkt dat die zorgen terecht zijn. Aan de regels voldoen, is niet voor alle boeren\
+    \ financieel haalbaar, aldus het PBL. De verwachting is dan ook dat boeren die de benodigde\
+    \ aanpassingen niet kunnen betalen, met hun bedrijf zullen stoppen.</p>\n        <p>Boerenorganisatie\
+    \ LTO eist dat de stikstofplannen worden verbeterd. \"Boeren moeten meer mogelijkheden\
+    \ krijgen waaruit zij kunnen kiezen om de stikstofdoelen te halen\", is te lezen in een\
+    \ reactie. Daarmee kan de boer \"vanuit vakmanschap en ondernemerschap\" kiezen welke\
+    \ aanpassingen passen bij het eigen bedrijf.</p>\n        <h2>Stok achter de deur</h2>\n\
+    \        <p>Een van de maatregelen uit het stikstofpakket moet sowieso van tafel, vindt\
+    \ de boerenorganisatie: de zogeheten 'generieke korting' voor boeren. Die stok achter\
+    \ de deur houdt in dat boeren dieren moeten wegdoen als de doelen toch niet gehaald worden.</p>\n\
+    \        <p>Het PBL heeft daar ook kritiek op. Het planbureau is bang dat de dreigende\
+    \ korting boeren weerhoudt van verduurzaming, want waarom zou je dure aanpassingen aan\
+    \ je bedrijf doen als je later misschien alsnog dieren kwijtraakt?</p>\n        <p>\"\
+    Het spreken over generieke krimp is onnodig, werkt averechts en is voor LTO onbespreekbaar\"\
+    , zegt de organisatie, die wekelijks met minister Van Essen praat over verbetering van\
+    \ zijn plannen.</p>\n        <p>Van Essen heeft vertrouwen dat de stikstofdoelen gehaald\
+    \ worden en de generieke korting niet nodig is. Toch houdt hij eraan vast. \"Ze staan\
+    \ in de plannen en het coalitieakkoord als een noodrem.\" Hij hoopt daarmee voldoende\
+    \ zekerheid te geven dat het de goede kant op gaat met de natuur, zodat vergunningverlening\
+    \ weer mogelijk wordt. \"Maar het kabinet wil de generieke korting niet inzetten\", benadrukt\
+    \ de minister.</p>"
+- name: oproep-om-binnen-te
+  min: 1
+  max: 4
+  why: A local emergency instruction being lifted -- the aftermath of an incident, not a national
+    event. Production scored it 8.
+  title: Oproep om binnen te blijven in Overasselt vervallen na dag met 'on-Nederlands' geweld
+  summary: "<p>De oproep aan de inwoners van Overasselt om binnen te blijven, is ingetrokken.\
+    \ De politie zegt dat er geen aanwijzingen zijn dat zich nog verdachten in of rond het\
+    \ dorp schuilhouden.</p>\n        <p>Wel blijft de oproep van kracht om meteen 112 te\
+    \ bellen als inwoners een verdachte situatie zien. Vannacht is in het gebied verscherpt\
+    \ toezicht. Er wordt extra gesurveilleerd door de politie. Bij daglicht gaat het onderzoek\
+    \ verder.</p>\n        <p>Agenten hebben in de avond tussen Overasselt en Nederasselt\
+    \ gezocht naar leden van de gewapende groep die de afgelopen nacht onderweg was naar een\
+    \ boerderij net buiten het dorp. Daar werd een man van 51 uit Wijchen doodgeschoten. Later\
+    \ werd ook op de politie geschoten.</p>\n        <p>De burgemeester van de gemeente Heumen,\
+    \ het Openbaar Ministerie en de politie gaven aan het eind van de middag een overzicht\
+    \ van wat er afgelopen nacht gebeurd was. Burgemeester Minses noemde die gebeurtenissen\
+    \ \"on-Nederlands\".</p>\n        <h2>Bewakingscamera's</h2>\n        <p>Om 04.00 uur\
+    \ verschenen twee busjes op de Ewijkseweg, zo blijkt uit beelden van bewakingscamera's.\
+    \ Er kwamen tientallen gemaskerde mannen uit, een aantal van hen had zware vuurwapens\
+    \ bij zich.</p>\n        <p>Ze liepen in de richting van de boerderij waar een familie\
+    \ woont die met drugshandel in verband wordt gebracht. Kort daarna hielden ze halt bij\
+    \ een auto waar iemand in zat. Er werd vijf keer geschoten, daarna trok de groep zich\
+    \ terug.</p>\n        <p><em>Op deze beelden is vermoedelijk te zien hoe iemand van de\
+    \ bende op degene in de auto schiet:</em></p>\n        <p>De politie zei vanmiddag tijdens\
+    \ de persconferentie dat een 51-jarige man uit Wijchen is doodgeschoten. Dat is zo goed\
+    \ als zeker de persoon die in de auto zat. Hij zou als beveiliger door de bewoners van\
+    \ het huis zijn ingehuurd.</p>\n        <p>De gemaskerde mannen hebben ook op twee politieagenten\
+    \ geschoten die op de melding van een verdachte situatie waren afgestuurd. Een van de\
+    \ twee raakte daarbij levensbedreigend gewond. De agenten zijn inmiddels beiden buiten\
+    \ levensgevaar.</p>\n        <p><em>Een inwoner van Overasselt zei tegen Nieuwsuur dat\
+    \ hij de agenten op straat zag liggen: </em></p>\n        <p>Daarna maakten agenten en\
+    \ de Dienst Speciale Interventies met helikopters en honden jacht op de bendeleden, in\
+    \ tuinen, in maïsvelden, op snelwegen en bij een station. Daarbij zijn waarschuwingsschoten\
+    \ gelost.</p>\n        <p>Plaatsvervangend politiechef Aalbers zei dat op verschillende\
+    \ plaatsen in het land 34 verdachten zijn opgepakt. Onder hen zijn mensen uit Frankrijk,\
+    \ België, Algerije en Nederland. Rechercheurs deden op meerdere plaatsen onderzoek.</p>\n\
+    \        <h2>Drugsconflict</h2>\n        <p>Alles wijst erop dat Overasselt het strijdtoneel\
+    \ was van een conflict tussen drugscriminelen. <a href=\"https://www.parool.nl/misdaad/schietpartij-in-overasselt-gelinkt-aan-hoogopgelopen-conflict-over-grote-hoeveelheid-cocaine-van-bolle-jos~baf5fcb9/\"\
+    >Het Parool</a> en <a href=\"https://www.telegraaf.nl/binnenland/schietpartij-overasselt-ontstaan-door-geescaleerd-drugsconflict-mogelijk-gelieerd-aan-bolle-jos/160789927.html\"\
+    >De Telegraaf</a> hoorden van bronnen dat de inzet van dat conflict een grote verdwenen\
+    \ partij cocaïne is van de organisatie van de voortvluchtige crimineel Jos L., ook wel\
+    \ 'Bolle Jos' genoemd.</p>\n        <p>Een van de bewoners, Jan G., zou in het verleden\
+    \ zaken met hem hebben gedaan. Volgens Het Parool gaan personen in het criminele milieu\
+    \ ervan uit dat de bende naar Overasselt kwam om een deel van de verdwenen partij terug\
+    \ te halen.</p>\n        <p>Om die te kunnen tillen waren er zo veel mensen opgetrommeld.\
+    \ De Telegraaf schrijft dat Jan G. met een kind via de achterkant van zijn woning wist\
+    \ te ontkomen.</p>\n        <p>Veel inwoners van Overasselt zijn niet verbaasd over de\
+    \ verhalen over een drugsconflict. Iedereen weet dat Jan G. bij drugshandel betrokken\
+    \ was, zegt iemand die hem en zijn familie goed kent.</p>\n        <p>Dat iedereen op\
+    \ de hoogte was is niet zo vreemd. De familie waar het om gaat, kwam vanwege drugshandel\
+    \ meerdere keren in aanvaring met justitie. In 2019 werd bij een brand op het terrein\
+    \ een drugslab ontdekt.</p>\n        <p>In 2024 stonden er op een dag gewapende mannen\
+    \ voor de poort en vorig jaar vuurde iemand met een automatisch wapen 25 kogels op de\
+    \ boerderij af. Volgens <a href=\"https://www.gelderlander.nl/heumen/doelwit-van-schietpartij-overasselt-eerder-dit-jaar-veroordeeld-tot-vier-jaar-cel-dit-is-waarom-hij-toch-nog-niet-achter-tralies-zit~a77a98bb/\"\
+    >De Gelderlander</a> is Jan G. dit jaar tot een gevangenisstraf van vier jaar veroordeeld.\
+    \ Hij gaat daartegen in beroep, zei zijn advocaat.</p>"
