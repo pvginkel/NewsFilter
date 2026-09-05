@@ -106,16 +106,34 @@ unprefixed forms below are what a checkout outside the environment uses.
 ## Conventions
 
 - Scoring criteria live in `data/prompt.txt`: an anchor per band from 1 to 10,
-  with the 7 — the band `App.CUTOFF` cuts against — spelled out as three kinds
-  of article: something to act on, something that hits most households in the
-  wallet, and a national turning point worth knowing even when it costs you
-  nothing. Two rules hold the volume down. Only the article that breaks an
-  event can reach 7; the reactions, analyses, polls and reconstructies after it
-  cap at 5, which is what keeps one event from becoming ten messages. And
-  transient local disruption caps at 4, weather at 3 — immediate is not the
-  same as important. Bands and cutoff are calibrated together, so change them
+  with the 7 — the band `App.CUTOFF` cuts against — spelled out as four kinds
+  of article: something to watch out for or act on, a national rule that
+  changes what is allowed or owed (with or without a price tag), something
+  felt in the wallet, and a national turning point worth knowing even when it
+  costs you nothing. The 7 deliberately does not require an ingangsdatum or
+  that everyone is affected — demanding either is what used to leave box 3,
+  windmill norms and new intelligence-service powers stranded at 6. Band 6 is
+  therefore narrow on purpose: genuinely vague plans, and changes that reach
+  only a small group.
+- Two rules hold the volume down. Only the article that breaks an event can
+  reach 7; the reactions, analyses, polls and reconstructies after it cap at
+  5, which is what keeps one event from becoming ten messages. And transient
+  local disruption caps at 4, weather at 3 — immediate is not the same as
+  important. Bands and cutoff are calibrated together, so change them
   together. The placeholder `%DATE%` is replaced at request time with today's
   date in Dutch (`Scorer.get_date()`).
+- Calibrate against production, not against a feed snapshot. The RSS feed only
+  holds ~20 items, so any single fetch is an unrepresentative slice — it is
+  entirely possible to draw a window with no Dutch policy news in it at all
+  and conclude the wrong thing. The real corpus is on the prd volume:
+  `$STORE_PATH/scorelog/` has 10 days of scored articles and
+  `$STORE_PATH/cache/<MODEL>/` holds the original article text. Copy both out
+  of the `samba` pod in `newsfilter-prd` (`kubectl --kubeconfig
+  ~/.kube/config-prd-write -n newsfilter-prd exec ...`, `kubectl` lives in the
+  `iac` toolchain), re-score them with the candidate prompt and replay
+  `Deduper` over the result in publication order. That measures the change in
+  messages per day directly. The current prompt lands at ~1.8 a day over 13
+  replayed days, against 2.9 for what production was sending.
 - The model is set in `Scorer.MODEL` (currently `gpt-5.6-sol`). Reasoning
   models — the prefixes in `Scorer.REASONING_PREFIXES`, i.e. `o*` and
   `gpt-5.5` and up — reject any temperature but the default, so those get `1`;
