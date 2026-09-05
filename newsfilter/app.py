@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from dataclasses_json import dataclass_json
 
+from .config import STORE_PATH
 from .scorelogger import ScoreLogger
 from .poster import Poster
 from .scorer import Scorer
@@ -18,7 +19,7 @@ class Settings:
 
 
 class App:
-    SETTINGS_PATH = os.path.join(os.getenv("STORE_PATH"), "config.json")
+    SETTINGS_PATH = os.path.join(STORE_PATH, "config.json")
     CUTOFF = 7
 
     def __init__(self):

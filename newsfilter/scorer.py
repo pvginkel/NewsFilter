@@ -3,6 +3,7 @@ import logging
 from typing import Optional
 from openai import OpenAI
 import os
+from .config import DATA_PATH, STORE_PATH
 from .loader import NewsArticle
 import json
 import hashlib
@@ -23,8 +24,7 @@ class ScoredArticle:
 class Scorer:
     MODEL = "gpt-5.4-mini"
     SUMMARY_LENGTH = 2000
-    DATA_PATH = os.getenv("DATA_PATH")
-    CACHE_PATH = os.path.join(os.getenv("STORE_PATH"), "cache", MODEL)
+    CACHE_PATH = os.path.join(STORE_PATH, "cache", MODEL)
     # See https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683
     TEMPERATURE = 0.2
     MONTHS = [
@@ -46,7 +46,7 @@ class Scorer:
         self.logger = logging.getLogger(__name__)
         self.client = OpenAI()
 
-        with open(os.path.join(self.DATA_PATH, "prompt.txt"), encoding="utf-8") as f:
+        with open(os.path.join(DATA_PATH, "prompt.txt"), encoding="utf-8") as f:
             self.prompt = f.read()
 
     def score(self, article: NewsArticle) -> Optional[ScoredArticle]:

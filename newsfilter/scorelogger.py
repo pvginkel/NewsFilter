@@ -3,15 +3,15 @@ import datetime
 import re
 import yaml
 
+from .config import STORE_PATH
 from .scorer import ScoredArticle
 
 
 class ScoreLogger:
-    STORE_PATH = os.getenv("STORE_PATH")
     MAX_LOG_DAYS = 10
 
     def __init__(self):
-        self.log_path = os.path.join(self.STORE_PATH, "scorelog")
+        self.log_path = os.path.join(STORE_PATH, "scorelog")
 
         os.makedirs(self.log_path, exist_ok=True)
 
