@@ -28,9 +28,9 @@ setup:
 
 preamble:
   instructions: |
-    NewsFilter is a one-shot batch job — `poetry run python -m newsfilter`
-    processes the articles published since the last run and exits. There is no
-    server to start and nothing listens on a port.
+    NewsFilter is a one-shot batch job — `cexec python poetry run python -m
+    newsfilter` processes the articles published since the last run and exits.
+    There is no server to start and nothing listens on a port.
 
     Telegram is not wired up in this environment on purpose: OPENAI_API_KEY is
     projected but TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_IDS are not, so the app

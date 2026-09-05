@@ -38,21 +38,25 @@ runs as a container that is launched periodically.
 
 `newsfilter/__main__.py` calls `load_dotenv()` before importing the rest of
 the package, so a `.env` in the working directory is picked up automatically.
-Real environment variables win over `.env`. These must be set (via either
-mechanism) before `App` is imported, since paths are read at class-definition
-time:
+Real environment variables win over `.env`. `OPENAI_API_KEY`,
+`TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_IDS` must be set (via either
+mechanism) before `App` is imported. `DATA_PATH` and `STORE_PATH` are
+optional and fall back to defaults:
 
 - `OPENAI_API_KEY` — used by the `OpenAI` client.
 - `TELEGRAM_BOT_TOKEN` — token of the Telegram bot used to post messages.
 - `TELEGRAM_CHAT_IDS` — comma-separated list of chat IDs to post to (a single
   value works too; whitespace around entries is trimmed).
-- `DATA_PATH` — directory containing `prompt.txt` (use `data` locally).
+- `DATA_PATH` — directory containing `prompt.txt`. Defaults to `data`.
 - `STORE_PATH` — writable directory for `config.json`, `cache/`, and
-  `scorelog/`.
+  `scorelog/`. Defaults to `store`.
 
-`App.SETTINGS_PATH` and `Scorer.CACHE_PATH` are computed at class-definition
-time from `os.getenv("STORE_PATH")`, so importing the module without
-`STORE_PATH` set will produce paths starting with `None/…` and fail later.
+The defaults live in `newsfilter/config.py`. They are still read at
+class-definition time, so changing `DATA_PATH` or `STORE_PATH` at runtime
+after import has no effect. In the KubeCoder environment `OPENAI_API_KEY` is
+projected automatically from the deployment's secret catalog; the Telegram
+variables are deliberately left unset, so a run scores and logs articles but
+posts nothing.
 
 ## Running and testing
 
@@ -61,17 +65,24 @@ venv lives in `~/.cache/pypoetry/virtualenvs/` — do not create a `.venv/` at
 the project root, because Poetry will silently adopt it instead of using the
 out-of-project default.
 
-- Local: `poetry run python -m newsfilter` after setting `OPENAI_API_KEY` /
-  `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_IDS` (`DATA_PATH` and `STORE_PATH` come
-  from `.env`). Entry point is `newsfilter/__main__.py`.
-- Docker: `scripts/run.sh` builds the image and runs it with `tmp/` mounted as
-  the store. The Dockerfile installs deps with Poetry into the system Python
-  (`POETRY_VIRTUALENVS_CREATE=false`). The scripts read `OPENAI_API_KEY` /
-  `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_IDS` from the host shell (see
-  `scripts/args.sh`).
-- Tests: `poetry run pytest`. The suite in `tests/test_score.py` calls the
-  real OpenAI API and asserts that low-relevance articles score at or below
-  `6`. The scorer's on-disk cache makes re-runs fast and cheap.
+Poetry and Ruff live in the `python` toolchain sidecar, not in the dev
+container, so every Python command takes a `cexec python` prefix here. The
+unprefixed forms below are what a checkout outside the environment uses.
+
+- Setup: `kc project setup` → `cexec python poetry install`.
+- Run: `cexec python poetry run python -m newsfilter`. Entry point is
+  `newsfilter/__main__.py`. Nothing listens on a port — the run processes the
+  articles published since the last one and exits.
+- Build: `kc project build` → `kaniko --no-push`, which proves the Dockerfile
+  without pushing. To push a scratch image,
+  `kaniko --destination registry:5000/newsfilter:dev` — Jenkins owns `:latest`
+  and the numbered tags, so a local build must not use them.
+- Tests: `kc project test` → `cexec python poetry run pytest`. The suite in
+  `tests/test_score.py` calls the real OpenAI API and asserts that
+  low-relevance articles score at or below `6`. The scorer's on-disk cache
+  makes re-runs fast and cheap.
+- Lint: `kc project lint` → `cexec python ruff check .` and
+  `./scripts/arch-validate.py docs/architecture/*.yaml`.
 
 ## Conventions
 
