@@ -1,21 +1,21 @@
 import logging
 import os
-from typing import Optional
 from dataclasses import dataclass
 from datetime import datetime
+
 from dataclasses_json import dataclass_json
 
 from .config import STORE_PATH
-from .scorelogger import ScoreLogger
-from .poster import Poster
-from .scorer import Scorer
 from .loader import Loader, NewsArticle
+from .poster import Poster
+from .scorelogger import ScoreLogger
+from .scorer import Scorer
 
 
 @dataclass_json
 @dataclass
 class Settings:
-    last_processed: Optional[datetime]
+    last_processed: datetime | None
 
 
 class App:

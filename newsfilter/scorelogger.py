@@ -1,6 +1,7 @@
-import os
 import datetime
+import os
 import re
+
 import yaml
 
 from .config import STORE_PATH
@@ -18,7 +19,7 @@ class ScoreLogger:
     def log(self, article: ScoredArticle) -> None:
         self._delete_old_logs()
 
-        now = datetime.datetime.now().date()
+        now = datetime.datetime.now(tz=datetime.UTC).date()
 
         with open(
             os.path.join(
@@ -42,7 +43,7 @@ class ScoreLogger:
             )
 
     def _delete_old_logs(self) -> None:
-        now = datetime.datetime.now().date()
+        now = datetime.datetime.now(tz=datetime.UTC).date()
 
         for name in os.listdir(self.log_path):
             match = re.search(r"^(\d+)-(\d+)-(\d+)\.txt$", name)

@@ -1,8 +1,9 @@
+import calendar
+from collections.abc import Iterator
 from dataclasses import dataclass
-from datetime import datetime
-from typing import Generator, Iterator, Optional
+from datetime import UTC, datetime
+
 import feedparser
-import time
 
 
 @dataclass
@@ -11,20 +12,22 @@ class NewsArticle:
     title: str
     published: datetime
     summary: str
-    image_url: Optional[str]
+    image_url: str | None
 
 
 class Loader:
     RSS_FEED = "https://feeds.nos.nl/nosnieuwsalgemeen"
 
-    def load(self, since: Optional[datetime]) -> Iterator[NewsArticle]:
+    def load(self, since: datetime | None) -> Iterator[NewsArticle]:
         feed = feedparser.parse(self.RSS_FEED)
 
         for entry in feed.entries:
             article = NewsArticle(
                 link=entry.link,
                 title=entry.title,
-                published=datetime.fromtimestamp(time.mktime(entry.published_parsed)),
+                published=datetime.fromtimestamp(
+                    calendar.timegm(entry.published_parsed), tz=UTC
+                ),
                 summary=entry.summary,
                 image_url=(
                     entry.enclosures[0].href if len(entry.enclosures) > 0 else None
@@ -33,8 +36,9 @@ class Loader:
 
             # Only include new articles.
 
-            if since:
-                if article.published <= since.replace(tzinfo=None):
-                    break
+            # `since` comes back from config.json as an aware datetime, so it
+            # compares directly against the aware `published` above.
+            if since and article.published <= since:
+                break
 
             yield article

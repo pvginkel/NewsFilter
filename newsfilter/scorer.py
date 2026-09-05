@@ -1,15 +1,17 @@
-from dataclasses import dataclass
+import datetime
+import hashlib
+import json
 import logging
-from typing import Optional
-from openai import OpenAI
 import os
+from dataclasses import dataclass
+from typing import ClassVar
+
+from dataclasses_json import dataclass_json
+from openai import OpenAI
+
 from .config import DATA_PATH, STORE_PATH
 from .loader import NewsArticle
-import json
-import hashlib
-from dataclasses_json import dataclass_json
 from .utils import html_to_text
-import datetime
 
 
 @dataclass_json
@@ -27,7 +29,7 @@ class Scorer:
     CACHE_PATH = os.path.join(STORE_PATH, "cache", MODEL)
     # See https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683
     TEMPERATURE = 0.2
-    MONTHS = [
+    MONTHS: ClassVar[list[str]] = [
         "januari",
         "februari",
         "maart",
@@ -49,7 +51,7 @@ class Scorer:
         with open(os.path.join(DATA_PATH, "prompt.txt"), encoding="utf-8") as f:
             self.prompt = f.read()
 
-    def score(self, article: NewsArticle) -> Optional[ScoredArticle]:
+    def score(self, article: NewsArticle) -> ScoredArticle | None:
         summary = html_to_text(article.summary)
         if len(summary) > self.SUMMARY_LENGTH:
             summary = summary[: (self.SUMMARY_LENGTH - 3)] + "..."
@@ -116,7 +118,7 @@ class Scorer:
                 score=int(obj["nieuwswaardigheid"]),
                 reason=obj["onderbouwing"],
             )
-        except:
+        except Exception:
             self.logger.exception("Failed to score article")
 
             scored = None
@@ -130,7 +132,7 @@ class Scorer:
         return scored
 
     def get_date(self):
-        date = datetime.date.today()
+        date = datetime.datetime.now(tz=datetime.UTC).date()
         month = self.MONTHS[date.month - 1]
 
         return f"{date.day} {month} {date.year}"

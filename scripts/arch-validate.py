@@ -153,8 +153,7 @@ def main():
                     if json.loads(response).get("valid") is not True and status < 1:
                         status = 1
                 except json.JSONDecodeError:
-                    if status < 1:
-                        status = 1
+                    status = max(status, 1)
             else:
                 ok = print_human(name, response, args.quiet, c)
                 if not ok and status < 1:
@@ -165,8 +164,7 @@ def main():
         # 5xx: server-side failure (transport-class).
         print_server_error(name, http_code, response, c)
         if 400 <= http_code < 500:
-            if status < 1:
-                status = 1
+            status = max(status, 1)
         else:
             status = 2
 
