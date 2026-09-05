@@ -95,7 +95,7 @@ class Scorer:
                                 "type": "number",
                             },
                             "samenvatting": {
-                                "description": "Samenvatting van het nieuwsartikel van maximaal 400 karakters",
+                                "description": "Neutrale samenvatting van het nieuwsartikel zelf, maximaal 400 karakters, zonder uitleg over de relevantie voor de lezer",
                                 "type": "string",
                             },
                             "onderbouwing": {
