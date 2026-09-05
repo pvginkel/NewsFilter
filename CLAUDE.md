@@ -2,9 +2,10 @@
 
 ## What this project does
 
-NewsFilter pulls the NOS Algemeen Nieuws RSS feed, asks OpenAI to rate each new
-article 1-10 against the criteria in `data/prompt.txt`, and posts the ones at
-or above the cutoff (currently `7`, set in `App.CUTOFF`) to Telegram.
+NewsFilter pulls four NOS RSS feeds (Algemeen Nieuws, Binnenland, Politiek and
+Economie), asks OpenAI to rate each new article 1-10 against the criteria in
+`data/prompt.txt`, and posts the ones at or above the cutoff (currently `7`,
+set in `App.CUTOFF`) to Telegram.
 
 A single run is one-shot — there is no scheduler in the code. In production it
 runs as a container that is launched periodically.
@@ -13,10 +14,12 @@ runs as a container that is launched periodically.
 
 `App.run()` in `newsfilter/app.py` is the orchestrator:
 
-1. `Loader.load(since)` — parses the RSS feed and yields `NewsArticle`s newer
-   than `since`. The cursor (`last_processed`) is persisted to
-   `$STORE_PATH/config.json` via the atomic `App._save()` (writes `-tmp`,
-   rotates `-old`, then renames).
+1. `Loader.load(since)` — parses the four NOS RSS feeds, merges them (keeping
+   the first occurrence of each article `link`, so a story carried by more
+   than one feed is scored once), and yields `NewsArticle`s newer than
+   `since`, sorted newest-first across all feeds. The cursor
+   (`last_processed`) is persisted to `$STORE_PATH/config.json` via the
+   atomic `App._save()` (writes `-tmp`, rotates `-old`, then renames).
 2. `Scorer.score(article)` — calls OpenAI with the prompt from `DATA_PATH/prompt.txt`
    and a JSON-schema response format. Output keys are Dutch
    (`nieuwswaardigheid`, `samenvatting`, `onderbouwing`) and are mapped onto
@@ -83,18 +86,25 @@ unprefixed forms below are what a checkout outside the environment uses.
   high-side cases must reach `7`, so a model or prompt change that quietly
   drops everything under `CUTOFF` fails the build instead of going unnoticed.
   Every case builds its article with `published=now`, so the on-disk cache
-  never hides a regression.
+  never hides a regression. `tests/test_loader.py` covers merging the four
+  feeds — deduplication, newest-first ordering, and cursor filtering — by
+  monkeypatching `feedparser.parse`, so it makes no network calls.
 - Lint: `kc project lint` → `cexec python ruff check .` and
   `./scripts/arch-validate.py docs/architecture/*.yaml`.
 
 ## Conventions
 
 - Scoring criteria live in `data/prompt.txt`: an anchor per band from 1 to 10,
-  a rule that war/election/crime/company reporting caps at 5, and a rule that
-  transient local disruption caps at 4 and weather at 3 — immediate is not the
-  same as important. The bands are what `App.CUTOFF` cuts against, so the two
-  are calibrated together. The placeholder `%DATE%` is replaced at request time
-  with today's date in Dutch (`Scorer.get_date()`).
+  with the 7 — the band `App.CUTOFF` cuts against — spelled out as three kinds
+  of article: something to act on, something that hits most households in the
+  wallet, and a national turning point worth knowing even when it costs you
+  nothing. Two rules hold the volume down. Only the article that breaks an
+  event can reach 7; the reactions, analyses, polls and reconstructies after it
+  cap at 5, which is what keeps one event from becoming ten messages. And
+  transient local disruption caps at 4, weather at 3 — immediate is not the
+  same as important. Bands and cutoff are calibrated together, so change them
+  together. The placeholder `%DATE%` is replaced at request time with today's
+  date in Dutch (`Scorer.get_date()`).
 - The model is set in `Scorer.MODEL` (currently `gpt-5.6-sol`). Reasoning
   models — the prefixes in `Scorer.REASONING_PREFIXES`, i.e. `o*` and
   `gpt-5.5` and up — reject any temperature but the default, so those get `1`;
