@@ -32,9 +32,6 @@ imageBuilder: true
 secrets:
   OPENAI_API_KEY: openai-api-key
 
-setup:
-  - kc project setup
-
 preamble:
   instructions: |
     NewsFilter is a one-shot batch job — `cexec python poetry run python -m
