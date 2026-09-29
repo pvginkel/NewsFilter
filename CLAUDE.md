@@ -107,7 +107,7 @@ unprefixed forms below are what a checkout outside the environment uses.
   across runs, pruning, the fail-open path, and a damaged state file, by
   faking the OpenAI client, so it too makes no network calls.
 - Lint: `kc project lint` → `cexec python ruff check .` and
-  `./scripts/arch-validate.py docs/architecture/*.yaml`.
+  `cexec aac-tools arch-validate docs/architecture/*.yaml`.
 
 ## Conventions
 

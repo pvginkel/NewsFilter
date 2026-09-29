@@ -16,6 +16,8 @@ tools:
   # `~/.kube` is the same directory in every tool container, so the grant above
   # is reached from here as `cexec iac kubectl --kubeconfig ~/.kube/<file> ...`.
   - use: iac
+  # arch-validate, the architecture artifact's lint gate.
+  - use: aac-tools
 
 # `scripts/build.sh` used to run `docker build`; there is no Docker daemon in
 # the pod, so the Dockerfile is built with the `kaniko` client instead.

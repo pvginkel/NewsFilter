@@ -141,6 +141,5 @@ newsfilter/        Application package (entry point: python -m newsfilter)
   config.py        DATA_PATH / STORE_PATH defaults
 data/prompt.txt    System prompt used by the scorer
 pyproject.toml     Poetry project + dependency definitions
-scripts/           arch-validate.py, run by Jenkinsfile.architecture
 tests/             Pytest suite (hits the live OpenAI API)
 ```

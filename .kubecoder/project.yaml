@@ -1,9 +1,8 @@
 projects:
   # One component. NewsFilter is a single poetry package with one pytest
   # config, so there is nothing to split on by toolchain or by folder — `root`
-  # owns the whole gate. Python work runs in the `python` toolchain sidecar via
-  # cexec; scripts/arch-validate.py is stdlib-only and runs in the dev
-  # container, so it takes no prefix.
+  # owns the whole gate. Python work runs in the `python` toolchain sidecar and
+  # arch-validate in the `aac-tools` one, both via cexec.
   root:
     description: >-
       NewsFilter — one-shot batch job that scores the NOS Algemeen Nieuws RSS
@@ -22,4 +21,4 @@ projects:
       - cexec python ruff check .
       # Same check the AaC/NewsFilter pipeline runs (Jenkinsfile.architecture).
       # Needs outbound HTTPS to architecture.webathome.org.
-      - ./scripts/arch-validate.py docs/architecture/*.yaml
+      - cexec aac-tools arch-validate docs/architecture/*.yaml
