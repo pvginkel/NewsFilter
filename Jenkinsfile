@@ -1,31 +1,61 @@
-import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
+// Builds the newsfilter image and pins it into NewsfilterDeploy, which Argo CD syncs to prd.
+//
+// Controller config:
+//   - Job: NewsFilter
+//   - SCM: pvginkel/NewsFilter, branch main
+//   - Script Path: Jenkinsfile
 
 library identifier: 'JenkinsPipelineUtils', changelog: false
 
-podTemplate(inheritFrom: 'jenkins-agent kaniko', containers: [
-    containerTemplates.k8s('k8s')
-]) {
-    node(POD_LABEL) {
-        stage('Cloning repo') {
-            checkout scm
+pipeline {
+    agent {
+        kubernetes {
+            inheritFrom 'jenkins-agent kaniko'
+            yamlMergeStrategy merge()
+            yaml podYaml(templates: ['k8s'])
         }
+    }
 
-        stage("Building NewsFilter") {
-            container('kaniko') {
-                helmCharts.kaniko([
-                    "registry:5000/newsfilter:${currentBuild.number}",
-                    "registry:5000/newsfilter:latest"
-                ])
+    options {
+        disableConcurrentBuilds(abortPrevious: true)
+        skipDefaultCheckout()
+        timeout(time: 60, unit: 'MINUTES')
+        timestamps()
+    }
+
+    triggers {
+        githubPush()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
 
-        // The build hands its image to Argo CD by pinning it in the deploy repo (argo-cd D53);
-        // Argo syncs the commit. HelmCharts no longer deploys this app.
+        stage('Build newsfilter image') {
+            steps {
+                container('kaniko') {
+                    script {
+                        helmCharts.kaniko2(destinations: [
+                            "registry:5000/newsfilter:${currentBuild.number}",
+                            'registry:5000/newsfilter:latest',
+                        ])
+                    }
+                }
+            }
+        }
+
         stage('Write image pins') {
-            container('k8s') {
-                cicd.writeVersionPins(repo: 'pvginkel/NewsfilterDeploy', pins: [
-                    'config/prd/values.yaml': ['images.newsfilter': ":${currentBuild.number}"]
-                ])
+            steps {
+                container('k8s') {
+                    script {
+                        cicd.writeVersionPins(repo: 'pvginkel/NewsfilterDeploy', pins: [
+                            'config/prd/values.yaml': ['images.newsfilter': ":${currentBuild.number}"],
+                        ])
+                    }
+                }
             }
         }
     }

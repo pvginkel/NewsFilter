@@ -1,5 +1,5 @@
 # The whole build context crosses the wire on every `kaniko` build, and CI
-# builds this same context with helmCharts.kaniko. The Dockerfile copies only
+# builds this same context with helmCharts.kaniko2. The Dockerfile copies only
 # pyproject.toml, poetry.lock, newsfilter/ and data/ — nothing below is copied.
 
 .git

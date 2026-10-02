@@ -113,7 +113,7 @@ kaniko --destination registry:5000/newsfilter:dev  # build and push a scratch im
 
 Use the `:dev` tag for local pushes — Jenkins owns
 `registry:5000/newsfilter:latest` and the numbered tags, and a local build
-must not clobber them. Jenkins itself builds via `helmCharts.kaniko(...)` in
+must not clobber them. Jenkins itself builds via `helmCharts.kaniko2(...)` in
 the `Jenkinsfile`.
 
 ### Linting
