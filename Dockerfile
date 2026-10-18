@@ -1,4 +1,6 @@
-FROM python:slim
+# Pinned to 3.14: under python:slim's 3.15 the locked jiter has no wheel and the slim image has no
+# compiler to build one. Back to python:slim once the lock resolves to 3.15 wheels.
+FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
