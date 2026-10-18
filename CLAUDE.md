@@ -140,10 +140,18 @@ unprefixed forms below are what a checkout outside the environment uses.
   `Deduper` over the result in publication order. That measures the change in
   messages per day directly. The current prompt lands at ~1.8 a day over 13
   replayed days, against 2.9 for what production was sending.
-- The model is set in `Scorer.MODEL` (currently `gpt-5.6-sol`). Reasoning
+- The model is set in `Scorer.MODEL` (currently `gpt-6.1-sol`, which halved
+  the token price of `gpt-5.6-sol` at the same tier). Reasoning
   models — the prefixes in `Scorer.REASONING_PREFIXES`, i.e. `o*` and
   `gpt-5.5` and up — reject any temperature but the default, so those get `1`;
   the older chat models get `Scorer.TEMPERATURE` (`0.2`).
+- Scoring requests go to the flex tier (`Scorer.SERVICE_TIER`), which halves
+  the price again in exchange for latency a cron job does not notice. Flex
+  answers a capacity shortage with an unbilled `429 Resource Unavailable`: the
+  client's own exponential backoff (`Scorer.MAX_RETRIES`) retries it, and once
+  that is spent the article is scored once more on the standard tier
+  (`service_tier="auto"`) rather than lost. The 15-minute `Scorer.TIMEOUT` is
+  the flex guide's recommendation.
 - `gpt-5.6-terra` was measured against `gpt-5.6-sol` on the 13-day replay and
   rejected. It is systematically more generous — higher on 208 of 474 articles
   and lower on 22, mean 4.07 against 3.55 — which comes out at 2.5 messages a

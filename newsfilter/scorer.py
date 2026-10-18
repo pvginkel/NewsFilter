@@ -1,4 +1,5 @@
 import datetime
+import functools
 import hashlib
 import json
 import logging
@@ -7,7 +8,7 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 from dataclasses_json import dataclass_json
-from openai import OpenAI
+from openai import OpenAI, RateLimitError
 
 from .config import DATA_PATH, STORE_PATH
 from .loader import NewsArticle
@@ -24,7 +25,7 @@ class ScoredArticle:
 
 
 class Scorer:
-    MODEL = "gpt-5.6-sol"
+    MODEL = "gpt-6.1-sol"
     SUMMARY_LENGTH = 2000
     CACHE_PATH = os.path.join(STORE_PATH, "cache", MODEL)
     # See https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683
@@ -32,6 +33,14 @@ class Scorer:
     # Reasoning models reject every temperature but the default of 1; only the
     # older chat models take TEMPERATURE.
     REASONING_PREFIXES: ClassVar[tuple[str, ...]] = ("o", "gpt-5.5", "gpt-5.6", "gpt-6")
+    # Scoring runs on the flex tier, at half the standard price, because a
+    # cron job does not care about latency. Flex is slower, so the timeout is
+    # the 15 minutes the flex guide recommends, and it answers a capacity
+    # shortage with an unbilled 429 Resource Unavailable, which the SDK's
+    # exponential backoff retries -- hence more retries than its default 2.
+    SERVICE_TIER = "flex"
+    TIMEOUT = 900.0
+    MAX_RETRIES = 5
     MONTHS: ClassVar[list[str]] = [
         "januari",
         "februari",
@@ -49,7 +58,7 @@ class Scorer:
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.client = OpenAI()
+        self.client = OpenAI(timeout=self.TIMEOUT, max_retries=self.MAX_RETRIES)
 
         with open(os.path.join(DATA_PATH, "prompt.txt"), encoding="utf-8") as f:
             self.prompt = f.read()
@@ -73,7 +82,8 @@ class Scorer:
 
         temperature = 1 if self.MODEL.startswith(self.REASONING_PREFIXES) else self.TEMPERATURE
 
-        response = self.client.chat.completions.create(
+        create = functools.partial(
+            self.client.chat.completions.create,
             model=self.MODEL,
             temperature=temperature,
             messages=[
@@ -111,6 +121,15 @@ class Scorer:
                 },
             },
         )
+
+        try:
+            response = create(service_tier=self.SERVICE_TIER)
+        except RateLimitError as e:
+            # Still out of capacity once the backoff is spent: score the
+            # article at the standard price rather than lose it. Any other
+            # 429, such as exhausted credits, fails here again and propagates.
+            self.logger.warning("Retrying on the standard tier: %s", e.message)
+            response = create(service_tier="auto")
 
         try:
             obj = json.loads(response.choices[0].message.content)
